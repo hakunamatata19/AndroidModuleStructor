@@ -1,0 +1,15 @@
+
+def build_versions=[:]
+build_versions.min_sdk=14
+build_versions.compile_sdk=33
+build_versions.target_sdk=33
+
+def app_config =[:]
+app_config.version_name = "1.0"
+app_config.version_code = 1000000
+ext.build_versions =build_versions
+
+ext.app_config = app_config
+
+//如果是调试模式，打开这个每个模块都是一个app，可以直接运行
+ext.DEBUG_MODE = false

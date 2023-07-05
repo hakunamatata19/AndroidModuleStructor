@@ -1,0 +1,99 @@
+pluginManagement {
+    println("pluginManagment")
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+dependencyResolutionManagement {
+    println("dependencyResolutionManagement")
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+    }
+    versionCatalogs{
+        println("versionCatalogs")
+        libs{
+            library("gson","com.google.code.gson:gson:$gson_version")
+            library("adnroidKotlin","org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlin_coroutine_version")
+
+            library('androidx-core',"androidx.core:core-ktx:$androidx_core_version")
+            library('androidx-constraintlayout',"androidx.constraintlayout:constraintlayout:$androidx_constraintlayou")
+            library('andoirdx-appcompat',"androidx.appcompat:appcompat:$androidx_appcompat")
+            library('android-material',"com.google.android.material:material:$material_version")
+            library('androidx_lifecycle',"androidx.lifecycle:lifecycle-runtime-ktx:$androidx_lifecycle")
+            library('androidx_viewmodel',"androidx.lifecycle:lifecycle-viewmodel-ktx:$androidx_lifecycle")
+            library('androidx_viewmodel_savedstate',"androidx.lifecycle:lifecycle-viewmodel-savedstate:$androidx_lifecycle")
+           // implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.6.1"
+          //  implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1"
+
+            bundle('base-dependencies',['androidx-core','andoirdx-appcompat',
+                                        'android-material','androidx-constraintlayout',
+            'androidx_lifecycle','androidx_viewmodel','androidx_viewmodel_savedstate'])
+            plugin('spring-dependency','io.spring.dependency-management').version('1.0.14.RELEASE')
+
+
+            version('hutool','5.8.6')
+            library('hutool-core','cn.hutool','hutool-core').versionRef('hutool')
+            library('hutool-http','cn.hutool','hutool-http').versionRef('hutool')
+            library('hutool-json','cn.hutool','hutool-json').versionRef('hutool')
+            bundle('hutool',['hutool-core','hutool-http','hutool-json'])
+
+
+            library('room-runtime',"androidx.room:room-runtime:$androidx_room")
+            library('room-compiler',"androidx.room:room-compiler:$androidx_room")
+            library('room-ktx',"androidx.room:room-ktx:$androidx_room")
+            library('room-paging',"androidx.room:room-paging:$androidx_room")
+            bundle('androidx_room',['room-runtime','room-compiler','room-ktx','room-paging'])
+
+            /******Lifecycle***/
+            library('android_lifecycle_livedata',"androidx.lifecycle:lifecycle-livedata-ktx:$androidx_lifecycle")
+
+
+            library('multidex', "androidx.multidex:multidex:$androidx_multidex")
+
+        }
+    }
+}
+
+
+
+buildscript {
+    ext {
+        gson_version = '2.10.1'
+        kotlin_coroutine_version='1.3.9'
+        androidx_core_version ='1.8.0'
+        androidx_appcompat='1.6.1'
+        material_version = '1.5.0'
+        androidx_constraintlayou='2.1.4'
+        androidx_lifecycle='2.6.1'
+        androidx_room='2.5.1'
+        androidx_multidex='2.0.1'
+    }
+    println("buildscript")
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+       // https://plugins.gradle.org/m2/org/springframework/boot/spring-boot-gradle-plugin/
+      //  classpath "org.springframework.boot:spring-boot-gradle-plugin:2.7.4"
+
+
+    }
+
+}
+
+
+
+rootProject.name = "AGP8Test"
+include ':app'
+include ':mylibrary'
+
+include ':base_view'
+include ':base_utils'
+include ':base_bean'
+include ':base_data'

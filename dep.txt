@@ -1,0 +1,20 @@
+pluginManagment
+buildscript
+dependencyResolutionManagement
+versionCatalogs
+
+> Configure project :
+mainGradle configurations
+allProjectsConfig
+allProjectsConfig
+allProjectsConfig
+allProjectsConfig
+allProjectsConfig
+allProjectsConfig
+allProjectsConfig
+subprojectsConfig
+subprojectsConfig
+subprojectsConfig
+subprojectsConfig
+subprojectsConfig
+subprojectsConfig

@@ -1,0 +1,98 @@
+/*plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id "kotlin-android"
+    id 'kotlin-kapt'
+}*/
+if (DEBUG_MODE) {
+    println("currentDebugMode")
+    plugins.apply('com.android.application')
+    plugins.apply 'org.jetbrains.kotlin.android'
+    plugins.apply 'kotlin-android'
+    plugins.apply 'kotlin-kapt'
+} else {
+    plugins.apply 'com.android.library'
+    plugins.apply 'org.jetbrains.kotlin.android'
+    plugins.apply 'kotlin-android'
+    plugins.apply 'kotlin-kapt'
+}
+
+android {
+    namespace 'com.chen.base_data'
+    compileSdk build_versions.compile_sdk
+
+    defaultConfig {
+        minSdk build_versions.min_sdk
+        targetSdk build_versions.target_sdk
+
+      //  applicationId "com.chen.base_data"
+        multiDexEnabled true
+
+
+        versionCode app_config.version_code
+        versionName app_config.version_name
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+    sourceSets {
+       main{
+           java{
+               srcDirs("src/main/kotlin")
+               srcDirs("src/main/debug")
+               sourceSets.all{
+                   set->
+                       println("${set.name}的文件是：${set.java.srcDirs}")
+               }
+           }
+           if(DEBUG_MODE){
+               println("debug manifestFIle:${manifest.srcFile}")
+               //manifest.srcFile "${projectDir}/src/main/debug/AndroidManifest.xml"
+               println("debug manifestFIle:${manifest.srcFile.exists()}")
+           }else{
+               println("release manifestFIle:${manifest.srcFile}")
+               manifest.srcFile "${projectDir}/src/main/release/AndroidManifest.xml"
+              // manifest.srcFile "${projectDir}/src/main/release/AndroidManifest.xml"
+               println("release manifestFIle:${manifest.srcFile.exists()}")
+           }
+
+
+       }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+}
+configurations {
+    cleanedAnnotations
+    implementation.exclude group: 'org.jetbrains' , module:'annotations'
+}
+dependencies {
+
+    api project(':base_utils')
+    api project(':base_bean')
+    implementation(libs.bundles.base.dependencies)
+    implementation(libs.bundles.androidx.room)
+    annotationProcessor "androidx.room:room-compiler:2.5.1"
+    kapt "androidx.room:room-compiler:2.5.1"
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+}
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile.class){
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
