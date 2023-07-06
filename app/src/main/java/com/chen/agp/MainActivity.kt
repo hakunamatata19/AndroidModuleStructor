@@ -7,6 +7,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
+import com.chen.base_data.repo.LocalDBDataRepo
 import com.chen.base_utils.KLog
 import com.chen.base_view.viewmodel.BaseActivity
 
@@ -31,6 +32,14 @@ class MainActivity : BaseActivity<MyViewModel>() {
     }
 
     override fun initData() {
+        LocalDBDataRepo.getInstance(getMyApplication().dataBase).getDatas().observe(this) { changedData ->
+            KLog.d(TAG,"getAllDatas: ${changedData?.size}")
+        }
+    }
 
+
+
+    private fun getMyApplication():BasicApp{
+      return  this@MainActivity.application as BasicApp
     }
 }

@@ -60,4 +60,8 @@ public class BasicApp extends MultiDexApplication {
     public AppExecutors getmAppExecutors() {
         return mAppExecutors;
     }
+
+    public UserAssetsDataBase getDataBase(){
+        return  mUserAssetsDatabase;
+    }
 }

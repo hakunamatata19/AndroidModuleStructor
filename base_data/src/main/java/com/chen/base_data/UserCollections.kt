@@ -32,7 +32,7 @@ interface UserCollections {
     fun getSongByIdAsync(sId:String):LiveData<CollectionSong>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE )
-    fun insertAll(vararg detail:CollectionSong)
+    fun insertAll(  detail:List<CollectionSong>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertSingle( song:CollectionSong)

@@ -12,7 +12,7 @@ import com.chen.base_data.UserAssetsDataBase
  * 本地数据存储，可能是一个数据库，也可能是一个MMKv
  *
  */
-abstract  class ALocalDataRepo(val mLocalDataManager:UserAssetsDataBase)
+abstract  class ALocalDataRepo(protected  val mLocalDataManager:UserAssetsDataBase)
     :DataRepo<CollectionSong,BaseSong,String> {
 
     private lateinit var mSongCollectAll:MediatorLiveData<List<CollectionSong>>
