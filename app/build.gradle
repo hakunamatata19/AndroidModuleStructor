@@ -10,13 +10,14 @@ android {
     defaultConfig {
         minSdk build_versions.min_sdk
         targetSdk build_versions.target_sdk
-        applicationId "com.chen.agp"
+
         multiDexEnabled true
 
 
         versionCode app_config.version_code
         versionName app_config.version_name
 
+        applicationId "com.chen.agp"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -25,6 +26,16 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        factory{ //生产环境，基本和release一致
+
+        }
+        getByName("release"){
+            println("AppBuildGradle")
+        }
+        getByName("debug"){
+            println "AppBuildGradle debug"
+        }
+
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -33,6 +44,7 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
 
 }
 configurations {

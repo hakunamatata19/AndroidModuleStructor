@@ -4,16 +4,18 @@
 buildscript {
     apply from: 'versions.gradle'
 
+
 }
 plugins {
     id 'com.android.application' version '8.0.1' apply false
     id 'com.android.library' version '8.0.1' apply false
     id 'org.jetbrains.kotlin.android' version '1.8.10' apply false
+    id 'org.jetbrains.kotlin.jvm' version '1.8.20' apply false
 }
 
-import  groovy.util.Eval
+artifacts {
 
-assert Eval.me("33*3") == 99
+}
 
 dependencies{
  // https://artifacts.iflytek.com/artifactory/mvn-repo
@@ -22,8 +24,14 @@ configurations {
     println("mainGradle configurations")
 }
 
-allprojects{
-    println("allProjectsConfig")
+def Project currentProject =getProject()
+allprojects{ current->
+
+    println("allProjectsConfig"+current)
+    println("allProjectsConfig"+current.name)
+    if( "app".equals(current.name)){
+        println("currentProject is APP.")
+    }
 }
 
 subprojects{
@@ -33,3 +41,4 @@ subprojects{
 task clean(type:Delete){
     delete rootProject.buildDir
 }
+

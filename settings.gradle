@@ -1,3 +1,5 @@
+//对应的是Setting 类
+
 pluginManagement {
     println("pluginManagment")
     repositories {
@@ -12,6 +14,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+
     }
     versionCatalogs{
         println("versionCatalogs")
@@ -92,8 +95,23 @@ buildscript {
 rootProject.name = "AGP8Test"
 include ':app'
 include ':mylibrary'
+project(":mylibrary").projectDir = new File("./mylibrary")
 
 include ':base_view'
 include ':base_utils'
 include ':base_bean'
-include ':base_data'
+include  ':base_data'
+
+
+
+println("projectDir: "+project(":app").projectDir)
+
+def Settings setting =getSettings()
+println("settings: "+setting.getRootProject())
+println("settings:dir "+setting.getSettingsDir())
+println("settings:pluginManager "+setting.getPluginManager())
+println("settings: hasJavaPlugin"+setting.getPluginManager().hasPlugin("java"))
+def appProject =setting.findProject(":app")
+println("appProject: "+appProject.buildFile)
+println("appProject: "+appProject.projectDir)
+include ':gradle_plugin_dev'
