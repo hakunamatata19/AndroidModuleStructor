@@ -1,8 +1,23 @@
+
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
 }
+//可以直接通过ext来定义一些额外的属性
+project.ext.CHEN_Version = "Chen"
+project.ext.CHEN_Version1 =  23
+println("projectName: "+project.name)
+println("projectName: "+project.getRootProject().name)
+println("projectName: "+project.ext.CHEN_Version)
+println("projectName: "+project.ext.CHEN_Version1)
+evaluationDependsOn(":base_view")
 
+// 扩展  通过Plugin给当前Project增加的一些 扩展
+def DependencyHandler depHandler =dependencies
+depHandler.getMetaPropertyValues().forEach{
+    deph ->
+        println("currentProjectHandler: "+deph.name)
+}
 android {
     namespace 'com.chen.gradle_plugin'
     compileSdk build_versions.compile_sdk
@@ -22,11 +37,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '17'
     }
 }
 
@@ -36,4 +51,80 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+}
+project.getConfigurations().forEach{
+    println("currentConfig: "+it.name)
+}
+//getDependencies 方法来获取当前所有依赖配置
+project.getDependencies().findAll().forEach{
+    println("currentProjectDepeandencies: "+it.metaClass)
+}
+//
+// 首先创建一个Settings对象来开始构建
+// 解析Settings.gradle对象，
+// 通过Settings，来创建Project的树图
+// 最后通过 build.gradle 来配置每一个Project对象，
+//
+//
+// build.gradle 和Project之间是一一对应关系，
+//
+
+// Project 其实就是一系列Task的集合，每一个Taks进行一项基础的任务（编译class文件， 进行单元测试，压缩一个文件等）
+
+
+task MyTask{
+      doFirst{
+          println "taskDoFirst"
+      }
+      doLast{
+          println "taskDoLast"
+      }
+    copy{
+        from "src/main/AndroidManifest.xml"
+       //  into "build/files/AndroidManifest.xml"
+        into "build/files2/"
+    }
+}
+project.task("simpleCopy"){
+    println("simpleCopyTask --- ")
+}
+
+tasks.findByName("simpleCopy").dependsOn(MyTask)
+
+/*
+project.findByName("MyTask").actions.forEach{
+    actionTmp->
+        println("MyTaskAction: "+actionTmp)
+}*/
+
+def  Gradle gradle=project.getGradle()
+println("gradleName:"+gradle.extensions)
+println("gradleName:"+gradle.gradleHomeDir)
+println("gradleName:"+gradle.gradleUserHomeDir)
+println("gradleName:"+gradle.gradleVersion)
+println("gradleName:"+gradle.pluginManager.findAll().size())
+println("gradleName:"+gradle.plugins.findAll().size())
+gradle.addBuildListener(new BuildListener() {
+    @Override
+    void settingsEvaluated(Settings settings) {
+        println("gradleChen settingsEvaluate")
+    }
+
+    @Override
+    void projectsLoaded(Gradle gradled) {
+        println("gradleChen projectsLoaded")
+    }
+
+    @Override
+    void projectsEvaluated(Gradle gradled) {
+        println("gradleChen projectsEvaluated")
+    }
+
+    @Override
+    void buildFinished(BuildResult result) {
+        println("gradleChen buildFinished: "+result.failure)
+    }
+})
+gradle.apply {
+
 }

@@ -2,16 +2,16 @@
 
 pluginManagement {
     println("pluginManagment")
-    repositories {
-        google()
-        mavenCentral()
+    repositories { //这两个闭包确定当前Gradle 应该去哪些仓库下载 插件，当然，你可以配置自己的本地仓库
+        google() //谷歌maven仓库
+        mavenCentral()//
         gradlePluginPortal()
     }
+
 }
 dependencyResolutionManagement {
-    println("dependencyResolutionManagement")
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories {
+    repositories { //这个闭包定义了所有工程都应该使用的仓库地址
         google()
         mavenCentral()
 
@@ -48,8 +48,8 @@ dependencyResolutionManagement {
             library('room-runtime',"androidx.room:room-runtime:$androidx_room")
             library('room-compiler',"androidx.room:room-compiler:$androidx_room")
             library('room-ktx',"androidx.room:room-ktx:$androidx_room")
-            library('room-paging',"androidx.room:room-paging:$androidx_room")
-            bundle('androidx_room',['room-runtime','room-compiler','room-ktx','room-paging'])
+           // library('room-paging',"androidx.room:room-paging:$androidx_room")
+            bundle('androidx_room',['room-runtime' ,'room-ktx'])
 
             /******Lifecycle***/
             library('android_lifecycle_livedata',"androidx.lifecycle:lifecycle-livedata-ktx:$androidx_lifecycle")
@@ -57,8 +57,11 @@ dependencyResolutionManagement {
 
             library('multidex', "androidx.multidex:multidex:$androidx_multidex")
 
+
+
         }
     }
+
 }
 
 
@@ -75,7 +78,7 @@ buildscript {
         androidx_room='2.5.1'
         androidx_multidex='2.0.1'
     }
-    println("buildscript")
+    println("buildscript"+androidx_room)
     repositories {
         maven {
             url "https://plugins.gradle.org/m2/"
@@ -104,7 +107,8 @@ include  ':base_data'
 
 
 
-println("projectDir: "+project(":app").projectDir)
+println("projectDirisDebuging: "
+          +project(":app").projectDir)
 
 def Settings setting =getSettings()
 println("settings: "+setting.getRootProject())
@@ -115,3 +119,28 @@ def appProject =setting.findProject(":app")
 println("appProject: "+appProject.buildFile)
 println("appProject: "+appProject.projectDir)
 include ':gradle_plugin_dev'
+
+
+/**********************/
+def pluginMan=getPluginManagement()
+gradle.addBuildListener(new BuildListener() {
+    @Override
+    void settingsEvaluated(Settings settings) {
+
+    }
+
+    @Override
+    void projectsLoaded(Gradle gradle) {
+
+    }
+
+    @Override
+    void projectsEvaluated(Gradle gradle) {
+
+    }
+
+    @Override
+    void buildFinished(BuildResult result) {
+
+    }
+})

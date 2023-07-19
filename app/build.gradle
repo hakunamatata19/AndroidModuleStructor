@@ -2,7 +2,12 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
 }
-println("---appPorjects")
+java {
+    toolchain{
+        languageVersion = JavaLanguageVersion.of(17)  //这里是指定用哪一个版本的JDK来编译 java或者kotlin远吗
+    }
+}
+println("ideaPlugin: ")
 android {
     namespace 'com.chen.agp'
     compileSdk build_versions.compile_sdk
@@ -23,33 +28,35 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            shrinkResources true
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-        factory{ //生产环境，基本和release一致
+        factory { //生产环境，基本和release一致
+            minifyEnabled true
 
         }
-        getByName("release"){
+        getByName("release") {
             println("AppBuildGradle")
         }
-        getByName("debug"){
+        getByName("debug") {
             println "AppBuildGradle debug"
         }
 
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17 //这里决定在编译的时候，代码可以用到哪一个版本的java api
+        targetCompatibility JavaVersion.VERSION_17 //生成的class文件用的是哪一个版本形式这个必须大于等于 sourceCompatibility
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '17'
     }
 
 
 }
 configurations {
     cleanedAnnotations
-    implementation.exclude group: 'org.jetbrains' , module:'annotations'
+    implementation.exclude group: 'org.jetbrains', module: 'annotations'
 }
 
 dependencies {
@@ -62,12 +69,14 @@ dependencies {
     api project(':base_data')
     api project(':base_bean')
     annotationProcessor "androidx.room:room-compiler:2.5.1"
+
+    implementation fileTree(dir:"libs", includes: ['*.jar'])
 /*    kapt "androidx.room:room-compiler:2.5.1"
     ksp "androidx.room:room-compiler:2.5.1"*/
-  /*  implementation 'androidx.core:core-ktx:1.8.0'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.5.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'*/
+    /*  implementation 'androidx.core:core-ktx:1.8.0'
+      implementation 'androidx.appcompat:appcompat:1.6.1'
+      implementation 'com.google.android.material:material:1.5.0'
+      implementation 'androidx.constraintlayout:constraintlayout:2.1.4'*/
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'

@@ -3,10 +3,14 @@
 
 buildscript {
     apply from: 'versions.gradle'
-
+    dependencies {
+      /*  classpath: 'org.podval.tools.cloudrun:0.3.2'
+        classpath: 'com.squareup.okhttp3:okhttp:3.14.9'*/
+    }
 
 }
-plugins {
+
+plugins { //这里定义适用于所有项目的依赖项， apply false 表示当前只引入，并不使用
     id 'com.android.application' version '8.0.1' apply false
     id 'com.android.library' version '8.0.1' apply false
     id 'org.jetbrains.kotlin.android' version '1.8.10' apply false
@@ -38,7 +42,8 @@ subprojects{
     println("subprojectsConfig")
 }
 
-task clean(type:Delete){
+
+task clean(type:Delete){ //定义清理build目录的task
     delete rootProject.buildDir
 }
 
