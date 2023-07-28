@@ -31,6 +31,8 @@ android {
 }
 
 dependencies {
+    implementation fileTree(dir:"libs", includes: ['*.jar'])
+
     api project(':base_utils')
     implementation(libs.bundles.base.dependencies)
     testImplementation 'junit:junit:4.13.2'

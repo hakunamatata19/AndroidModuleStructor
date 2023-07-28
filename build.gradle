@@ -1,3 +1,5 @@
+
+
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 
@@ -46,4 +48,56 @@ subprojects{
 task clean(type:Delete){ //定义清理build目录的task
     delete rootProject.buildDir
 }
+
+
+
+class MyPluginClass implements Plugin<Project>{
+
+    @Override
+    void apply(Project target) {
+        println("UserMyPluginCLass "+target.name)
+
+        target.task('printCurrentTaskInfo'){
+            doFirst{
+                println("UserMyPluginCLass projectPath:"+target.path)
+            }
+            doLast{
+                println("UserMyPluginCLass projectName:"+target.name)
+                println("UserMyPluginCLass projectPath:"+target.getPath())
+                println("UserMyPluginCLass projectResources:"+target.resources)
+            }
+        }
+    }
+}
+/************************************/
+abstract  class GreetingToFileTask extends  DefaultTask{
+    @OutputFile
+    abstract  org.gradle.api.file.RegularFileProperty getDestination()
+
+    @TaskAction
+    def greet(){
+        def file = getDestination().get().asFile
+        file.parentFile.mkdirs()
+        file.write("Hello, this is from Gradle")
+
+    }
+
+}
+def greetingFile = objects.fileProperty()
+
+tasks.register("greet", GreetingToFileTask){
+    destination = greetingFile
+}
+
+tasks.register("sayGreeting"){
+    dependsOn greet
+    doLast{
+        def file = greetingFile.get().asFile
+        println("filePath:${file.absolutePath}")
+        println "${file.text} (file: ${file.name})"
+    }
+}
+greetingFile.set(layout.buildDirectory.file("hello.txt"))
+
+
 

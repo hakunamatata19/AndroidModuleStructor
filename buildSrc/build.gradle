@@ -1,0 +1,16 @@
+plugins{
+    id 'java-gradle-plugin'
+    id 'groovy-gradle-plugin'
+}
+gradlePlugin{
+    plugins{
+        simplePlugin{
+            id = 'org.example.greeting'
+            implementationClass = 'org.example.GreetingPlugin'
+        }
+        releasePlugin{
+            id = 'com.coocaa.release'
+            implementationClass = 'com.coocaa.ReleasePlugin'
+        }
+    }
+}

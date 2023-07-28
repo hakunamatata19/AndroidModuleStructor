@@ -144,3 +144,11 @@ gradle.addBuildListener(new BuildListener() {
 
     }
 })
+public class MyGradlePluginSettings implements Plugin<Settings> {
+
+    @Override
+    public void apply(Settings target) {
+        println("wahahaha")
+    }
+}
+apply plugin :MyGradlePluginSettings

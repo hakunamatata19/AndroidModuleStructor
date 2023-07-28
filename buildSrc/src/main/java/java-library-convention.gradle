@@ -1,0 +1,20 @@
+plugins{
+    id 'java-library'
+    id 'checkstyle'
+}
+
+java{
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+checkstyle{
+    maxWarnings =0
+}
+tasks.withType(javaCompile){
+    options.warnings = true
+}
+dependencies {
+    testImplementation("junit:junit:4.13")
+    // ...
+}

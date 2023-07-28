@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'com.coocaa.release'
 }
 java {
     toolchain{
@@ -32,16 +33,23 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-        factory { //生产环境，基本和release一致
+      /*  factory { //生产环境，基本和release一致
             minifyEnabled true
 
-        }
+        }*/
         getByName("release") {
             println("AppBuildGradle")
         }
         getByName("debug") {
+            applicationIdSuffix ".debug"
             println "AppBuildGradle debug"
+            manifestPlaceholders = [hostName:"internal.example.com"]
         }
+
+    }
+    variantFilter{ //针对各个变体进行遍历配置
+        varient->
+        println("variantFilterVarient:"+varient.buildType.name)
 
     }
     compileOptions {
