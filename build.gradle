@@ -1,4 +1,5 @@
-
+import com.coocaa.CustomTask
+import com.coocaa.ProcessTemplates
 
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
@@ -83,9 +84,9 @@ abstract  class GreetingToFileTask extends  DefaultTask{
     }
 
 }
-def greetingFile = objects.fileProperty()
+RegularFileProperty  greetingFile = objects.fileProperty()
 
-tasks.register("greet", GreetingToFileTask){
+def greetTask =tasks.register("greet", GreetingToFileTask){
     destination = greetingFile
 }
 
@@ -100,4 +101,52 @@ tasks.register("sayGreeting"){
 greetingFile.set(layout.buildDirectory.file("hello.txt"))
 
 
+def taskName =tasks.named("sayGreeting").get().name
+println("debuggingName:"+taskName)
 
+tasks.withType(GreetingToFileTask).configureEach{
+    println("debuggingName: "+it)
+}
+
+tasks.register("myCustomTask", CustomTask,"helloMsg", 23)
+
+greetTask.configure{
+   dependsOn provider{
+       tasks.findAll {
+           it.name.startsWith("lib")
+       }
+   }
+
+}
+
+greetTask.configure{
+    enabled =false
+}
+def taskX = tasks.register('taskX') {
+    doLast {
+        println 'taskX'
+        throw new StopExecutionException()
+    }
+}
+def taskY = tasks.register('taskY') {
+    doLast {
+        println 'taskY'
+    }
+}
+
+taskX.configure { finalizedBy taskY }
+
+/*
+tasks.register("processTemplates", ProcessTemplates)
+tasks.findByName('processTemplates').configure {
+    templateEngine = 'hello'
+    sourceFiles = project.files('./build')
+    sourceFileSingle = project.file('./buildsrc/src/main/java/com.coocaa/CustomTask.java')
+    outputDir = project.objects.directoryProperty()
+    templateData{
+        mame = "hello"
+        variables{
+            h ='3'
+        }
+    }
+}*/
