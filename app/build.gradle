@@ -89,3 +89,13 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 }
+
+project.afterEvaluate{ //配置任务，将当前任务依赖 pluginActivity任务
+    project.tasks.each {tmpTask->
+        if(tmpTask.name == 'mergeDebugAssets'){
+           tmpTask.configure {
+               tmpTask.dependsOn ':pluginactivity:assembleDebug'
+           }
+        }
+    }
+}

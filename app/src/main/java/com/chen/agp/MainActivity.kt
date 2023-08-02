@@ -43,6 +43,8 @@ class MainActivity : BaseActivity<MyViewModel>() {
 
     override fun onResume() {
         super.onResume()
+
+        val baseLoader:ClassLoader;
         mViewModel!!.viewModelScope.launch(Dispatchers.Main) {
             withContext(Dispatchers.Main.immediate){}
         }

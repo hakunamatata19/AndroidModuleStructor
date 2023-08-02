@@ -1,0 +1,31 @@
+
+
+buildscript {
+    repositories {
+        maven {
+            url = uri("https://www.baidu.com")
+        }
+    }
+    dependencies {
+      //  classpath 'org.gradle:task:1.0-SNAPSHOT'
+    }
+}
+plugins {
+    //id 'java-library'
+   // id 'org.jetbrains.kotlin.jvm'
+    id 'groovy'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_7
+    targetCompatibility = JavaVersion.VERSION_1_7
+}
+dependencies {
+    implementation gradleApi()
+}
+
+
+/*
+tasks.register('greeting', com.chen.lib.GreetingTask) {
+    greeting = 'howdy!'
+}*/
