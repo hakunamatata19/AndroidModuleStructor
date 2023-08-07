@@ -15,7 +15,7 @@ import com.chen.base_data.UserAssetsDataBase
 abstract  class ALocalDataRepo(protected  val mLocalDataManager:UserAssetsDataBase)
     :DataRepo<CollectionSong,BaseSong,String> {
 
-    private lateinit var mSongCollectAll:MediatorLiveData<List<CollectionSong>>
+    private   var mSongCollectAll:MediatorLiveData<List<CollectionSong>>
  init {
      mSongCollectAll = MediatorLiveData()
 

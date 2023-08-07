@@ -154,3 +154,4 @@ public class MyGradlePluginSettings implements Plugin<Settings> {
 apply plugin :MyGradlePluginSettings
 include ':lib'
 include ':pluginactivity'
+include ':dynamicfeature'

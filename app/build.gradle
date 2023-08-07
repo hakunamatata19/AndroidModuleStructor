@@ -10,6 +10,14 @@ java {
 }
 println("ideaPlugin: ")
 android {
+    signingConfigs { //添加一个签名版本信息
+        release {
+            storeFile file('/Users/never/Public/logcat/letwindsgo.keystore')
+            storePassword 'letwindsgo'
+            keyAlias 'letwindsgo'
+            keyPassword 'letwindsgo'
+        }
+    }
     namespace 'com.chen.agp'
     compileSdk build_versions.compile_sdk
 
@@ -32,6 +40,10 @@ android {
             shrinkResources true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        debug{
+            signingConfig signingConfigs.release
         }
       /*  factory { //生产环境，基本和release一致
             minifyEnabled true
@@ -59,6 +71,7 @@ android {
     kotlinOptions {
         jvmTarget = '17'
     }
+    dynamicFeatures = [':dynamicfeature']
 
 
 }
@@ -91,11 +104,30 @@ dependencies {
 }
 
 project.afterEvaluate{ //配置任务，将当前任务依赖 pluginActivity任务
+    gradle.getGradle().startParameter.each {param->
+        println ("currentValue: ${param.metaPropertyValues}")
+        param.metaPropertyValues.forEach{prop-> //可以通过这些参数来判断当前任务是release还是debug
+            println("propValue:${prop.name}, value:${prop.value}")
+        }
+
+    }
+    if(isReleaseBuildType()){
+        return
+    }
     project.tasks.each {tmpTask->
+
         if(tmpTask.name == 'mergeDebugAssets'){
            tmpTask.configure {
                tmpTask.dependsOn ':pluginactivity:assembleDebug'
            }
         }
     }
+}
+boolean isReleaseBuildType(){
+    for(String s : gradle.startParameter.taskNames) {
+        if (s.contains("Release") | s.contains("release")) {
+            return true
+        }
+    }
+    return false
 }
