@@ -11,12 +11,10 @@
 /.idea/kotlinc.xml
 /.idea/misc.xml
 /.idea/assetWizardSettings.xml
-.DS_Store
+.DS_Store
 /build
 /captures
 .externalNativeBuild
 .cxx
 local.properties
 /.idea/*
-/.idea/
-.idea/
