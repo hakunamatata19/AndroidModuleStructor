@@ -1,6 +1,7 @@
 package com.chen.agp
 
 import android.annotation.SuppressLint
+import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -43,10 +44,10 @@ class MainActivity : BaseActivity<MyViewModel>() {
 
     override fun onResume() {
         super.onResume()
-
-        val baseLoader:ClassLoader;
         mViewModel!!.viewModelScope.launch(Dispatchers.Main) {
-            withContext(Dispatchers.Main.immediate){}
+            withContext(Dispatchers.Main.immediate){
+
+            }
         }
     }
 

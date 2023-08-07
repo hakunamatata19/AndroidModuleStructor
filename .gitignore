@@ -6,6 +6,10 @@
 /.idea/modules.xml
 /.idea/workspace.xml
 /.idea/navEditor.xml
+/.idea/compiler.xml
+/.idea/gradle.xml
+/.idea/kotlinc.xml
+/.idea/misc.xml
 /.idea/assetWizardSettings.xml
 .DS_Store
 /build
@@ -14,3 +18,5 @@
 .cxx
 local.properties
 /.idea/*
+/.idea/
+.idea/
