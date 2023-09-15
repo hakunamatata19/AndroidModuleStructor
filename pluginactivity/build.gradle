@@ -11,6 +11,7 @@ import org.gradle.util.internal.TextUtil
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -48,6 +49,9 @@ dependencies {
     implementation(libs.adnroidKotlin)
     implementation(libs.bundles.base.dependencies)
     implementation(libs.bundles.androidx.room)
+    kapt (libs.roomCompiler)
+
+
     implementation(libs.multidex)
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'

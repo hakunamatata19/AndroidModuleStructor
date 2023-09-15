@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'com.coocaa.release'
+    id 'kotlin-kapt'
 }
 java {
     toolchain{
@@ -12,7 +13,7 @@ println("ideaPlugin: ")
 android {
     signingConfigs { //添加一个签名版本信息
         release {
-            storeFile file('/Users/never/Public/logcat/letwindsgo.keystore')
+            storeFile file('./../keystore/letwindsgo.keystore')
             storePassword 'letwindsgo'
             keyAlias 'letwindsgo'
             keyPassword 'letwindsgo'
@@ -37,8 +38,8 @@ android {
 
     buildTypes {
         release {
-            shrinkResources true
-            minifyEnabled true
+            shrinkResources false
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }
@@ -71,9 +72,12 @@ android {
     kotlinOptions {
         jvmTarget = '17'
     }
-    dynamicFeatures = [':dynamicfeature']
+    //dynamicFeatures = [':dynamicfeature']
 
-
+ buildFeatures{
+     dataBinding = true
+     viewBinding = true
+ }
 }
 configurations {
     cleanedAnnotations
@@ -84,16 +88,18 @@ dependencies {
 
     implementation(libs.adnroidKotlin)
     implementation(libs.bundles.base.dependencies)
-    implementation(libs.bundles.androidx.room)
     implementation(libs.multidex)
     api project(':base_view')
     api project(':base_data')
     api project(':base_bean')
-    annotationProcessor "androidx.room:room-compiler:2.5.1"
 
     implementation fileTree(dir:"libs", includes: ['*.jar'])
-/*    kapt "androidx.room:room-compiler:2.5.1"
-    ksp "androidx.room:room-compiler:2.5.1"*/
+
+
+
+    implementation(libs.bundles.androidx.room)
+    kapt (libs.roomCompiler)
+
     /*  implementation 'androidx.core:core-ktx:1.8.0'
       implementation 'androidx.appcompat:appcompat:1.6.1'
       implementation 'com.google.android.material:material:1.5.0'

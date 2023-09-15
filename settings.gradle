@@ -45,10 +45,14 @@ dependencyResolutionManagement {
             bundle('hutool',['hutool-core','hutool-http','hutool-json'])
 
 
+            version('androidx_room','2.5.1')
+           /* library('room_runtime','androidx.room','room-runtime').versionRef('android_room')
+            library('room_ktx','androidx.room','room-ktx').versionRef('android_room')
+            library('room_compiler','androidx.room','room-compiler').versionRef('android_room')*/
+
             library('room-runtime',"androidx.room:room-runtime:$androidx_room")
-            library('room-compiler',"androidx.room:room-compiler:$androidx_room")
+            library('roomCompiler',"androidx.room:room-compiler:$androidx_room")
             library('room-ktx',"androidx.room:room-ktx:$androidx_room")
-           // library('room-paging',"androidx.room:room-paging:$androidx_room")
             bundle('androidx_room',['room-runtime' ,'room-ktx'])
 
             /******Lifecycle***/
@@ -154,4 +158,4 @@ public class MyGradlePluginSettings implements Plugin<Settings> {
 apply plugin :MyGradlePluginSettings
 include ':lib'
 include ':pluginactivity'
-include ':dynamicfeature'
+//include ':dynamicfeature'
