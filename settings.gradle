@@ -45,7 +45,7 @@ dependencyResolutionManagement {
             bundle('hutool',['hutool-core','hutool-http','hutool-json'])
 
 
-            version('androidx_room','2.5.1')
+           // version('androidx_room','2.5.1')
            /* library('room_runtime','androidx.room','room-runtime').versionRef('android_room')
             library('room_ktx','androidx.room','room-ktx').versionRef('android_room')
             library('room_compiler','androidx.room','room-compiler').versionRef('android_room')*/

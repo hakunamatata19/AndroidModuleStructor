@@ -1,7 +1,7 @@
 [versions]
 groovy = "3.0.5"
 checkstyle = "8.37"
-room_version = '2.5.1'
+androidx_room = '2.5.1'
 ktx ='1.9.0'
 
 [libraries]
