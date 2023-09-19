@@ -1,5 +1,7 @@
 package com.chen.base_utils;
 
+import android.text.PrecomputedText;
+
 import java.util.Arrays;
 //https://leetcode.cn/studyplan/top-interview-150/
 public class Solution {
@@ -197,9 +199,16 @@ public class Solution {
 
     public static void main(String[] args) {
         System.out.println("dsjafkdasj;flkdasj------" + (4 / 2));
-        String[] nums = {"flower","flow","flight"};
+    /*    String[] nums = {"flower","flow","flight"};
         String s =longestCommonPrefix(nums);
-        System.out.println("array:: " +s);
+        System.out.println("array:: " +s);*/
+
+
+        //是否是回文串
+
+       String s = "0P";
+        System.out.println("isPa: "+isPalindrome(s));
+
 
     }
     public static int strStr(String haystack,String needle){
@@ -216,5 +225,46 @@ public class Solution {
             }
         }
         return  -1;
+    }
+
+    public static boolean isPalindrome(String s){
+        int length = s.length();
+        int startPos =0;
+        int endPos =length-1;
+        char start= ' ';
+        char end = ' ';
+        while (startPos<=endPos){
+            start = isChar(s.charAt(startPos++));
+            System.out.println("currentStart: "+ start +", pos:"+(startPos-1));
+            while (start == ' ' && startPos<length){
+                start = isChar(s.charAt(startPos++));
+                System.out.println("--currentStart: "+ start +", pos:"+(startPos-1));
+            }
+            end = isChar(s.charAt(endPos--));
+            System.out.println("currentend: "+ end +", end:"+(end+1));
+            while (end == ' ' && endPos>=0){
+                end=isChar(s.charAt(endPos--));
+                System.out.println("--currentend: "+ end +", end:"+(end+1));
+            }
+            System.out.println("startPos = "+startPos+", resu:"+start);
+            System.out.println("endPos = "+endPos+", resu:"+end);
+            if(start != end){
+                return  false;
+            }
+        }
+        return true;
+    }
+
+    public  static char isChar(char tmp){
+        if(tmp >= '0' && tmp <= '9'){
+            return tmp;
+        }
+        if(tmp >= 'A' && tmp <='Z'){
+            tmp +=32;
+        }
+        if(tmp >='a'&& tmp <= 'z'){
+            return tmp;
+        }
+        return  ' ';
     }
 }
