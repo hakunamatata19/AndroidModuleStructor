@@ -1,0 +1,65 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+}
+
+android {
+    namespace 'com.chen.base_http'
+    compileSdk build_versions.compile_sdk
+
+    defaultConfig {
+        minSdk build_versions.min_sdk
+        targetSdk build_versions.target_sdk
+
+        //  applicationId "com.chen.base_data"
+        multiDexEnabled true
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField('String', 'MUSIC_MEDIA_INFO_URL', '"https://movie-tc.skysrt.com/"')
+
+        }
+        debug{
+            buildConfigField('String', 'MUSIC_MEDIA_INFO_URL', '"https://beta-movie-tc.skysrt.com/"')
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+
+}
+
+dependencies {
+
+    api project(':base_utils')
+    api project(':base_bean')
+
+    implementation(libs.bundles.base.dependencies)
+    //paging相关库
+    implementation(libs.paging.runtime)
+    testImplementation(libs.paging.common)
+    implementation(libs.paging.compose)
+
+    //okhttp相关
+    implementation(libs.squareup.okhttp.base)
+    implementation(libs.squareup.okhttp.interceptor)
+    implementation(libs.squareup.retrofit)
+    implementation(libs.squareup.gson.converter)
+
+
+
+
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+}

@@ -1,6 +1,6 @@
 
 def build_versions=[:]
-build_versions.min_sdk=16
+build_versions.min_sdk=26
 build_versions.compile_sdk=33
 build_versions.target_sdk=30
 

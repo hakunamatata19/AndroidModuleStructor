@@ -36,11 +36,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17 //这里决定在编译的时候，代码可以用到哪一个版本的java api
+        targetCompatibility JavaVersion.VERSION_17 //生成的class文件用的是哪一个版本形式这个必须大于等于 sourceCompatibility
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '17'
     }
 }
 

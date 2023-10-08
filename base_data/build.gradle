@@ -59,6 +59,9 @@ android {
 
        }
     }
+    buildFeatures{
+        buildConfig =true
+    }
 
     buildTypes {
         release {
@@ -82,9 +85,26 @@ configurations {
 dependencies {
     api project(':base_utils')
     api project(':base_bean')
+    api project(':base_http')
     implementation(libs.bundles.base.dependencies)
     implementation(libs.bundles.androidx.room)
     kapt (libs.roomCompiler)
+
+/*    //paging相关库
+    implementation(libs.paging.runtime)
+    testImplementation(libs.paging.common)
+    implementation(libs.paging.compose)
+
+    //okhttp相关
+    implementation(libs.squareup.okhttp.base)
+    implementation(libs.squareup.okhttp.interceptor)
+    implementation(libs.squareup.retrofit)*/
+
+
+
+
+    //retrofit相关
+
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'

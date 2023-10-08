@@ -10,18 +10,14 @@ import android.view.View
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.view.KeyEventDispatcher.Component
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
-import com.chen.base_bean.CollectionSong
 import com.chen.base_data.UserAssetsDataBase
 import com.chen.base_data.repo.LocalDBDataRepo
 import com.chen.base_utils.KLog
 import com.chen.base_view.viewmodel.BaseActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class MySecondActivity : BaseActivity<SecondViewModel>(), View.OnClickListener {
     private val TAG = "MySecondActivity"
@@ -99,9 +95,7 @@ class MySecondActivity : BaseActivity<SecondViewModel>(), View.OnClickListener {
         }
 
         KLog.d(TAG, "trystartIntent");
-        val intent = Intent();
-        //intent.setAction("coocaa.intent.music.ACTION.VOICE_CONTROL")
-       // intent.setPackage("com.coocaa.karaoke")
+    /*    val intent = Intent()
          intent.setComponent(ComponentName("com.coocaa.karaoke","com.coocaa.karaoke.component.SkyVoiceProcessor"))
         intent.putExtra("target_page", "page_music_search")
         intent.putExtra("content_main", "search_play_ksong")
@@ -111,7 +105,7 @@ class MySecondActivity : BaseActivity<SecondViewModel>(), View.OnClickListener {
             val component = startForegroundService(intent)
             KLog.d(TAG, "startService----$component");
 
-        }
+        }*/
 
 
     }
@@ -151,7 +145,7 @@ class MySecondActivity : BaseActivity<SecondViewModel>(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.second_btn_add -> {
-
+                mViewModel?.getMusicDetail("19")
                 if (ContextCompat.checkSelfPermission(
                         this@MySecondActivity,
                         Manifest.permission.FOREGROUND_SERVICE
@@ -189,9 +183,7 @@ class MySecondActivity : BaseActivity<SecondViewModel>(), View.OnClickListener {
                 --es content_main "search_play_ksong"
                 --es content_subordinate "{}"*/
                 KLog.d(TAG, "trystartIntent");
-                val intent = Intent();
-                //intent.setAction("coocaa.intent.music.ACTION.VOICE_CONTROL")
-                //intent.setPackage("com.coocaa.karaoke")
+               /* val intent = Intent()
                  intent.setComponent(ComponentName("com.coocaa.karaoke","com.coocaa.karaoke.component.SkyVoiceProcessor"))
                 intent.putExtra("target_page", "page_music_search")
                 intent.putExtra("content_main", "search_play_ksong")
@@ -201,7 +193,7 @@ class MySecondActivity : BaseActivity<SecondViewModel>(), View.OnClickListener {
                     val component = startForegroundService(intent)
                     KLog.d(TAG, "startService----$component");
 
-                }
+                }*/
 
                /* mViewModel?.viewModelScope?.launch(Dispatchers.IO) {
                     val datas = ArrayList<CollectionSong>()

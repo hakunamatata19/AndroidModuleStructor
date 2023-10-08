@@ -19,6 +19,15 @@ dependencyResolutionManagement {
     versionCatalogs{
         println("versionCatalogs")
         libs{
+            library("alibaba-fastjson-fastjson2","com.alibaba.fastjson2:fastjson2:$fastjson2_version")
+            library("alibaba-fastjson-kotlin","com.alibaba.fastjson2:fastjson2-kotlin:$fastjson2_version")
+            bundle('alibaba-fastjson2',['alibaba-fastjson-fastjson2' ,'alibaba-fastjson-kotlin'])
+
+            library("jetbrains-kotlin-stdlib","org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version")
+            library("jetbrains-kotlin-reflect","org.jetbrains.kotlin:kotlin-reflect:$kotlin_version")
+            bundle('jetbrains',['jetbrains-kotlin-stdlib' ,'jetbrains-kotlin-reflect'])
+
+
             library("gson","com.google.code.gson:gson:$gson_version")
             library("adnroidKotlin","org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlin_coroutine_version")
 
@@ -63,6 +72,21 @@ dependencyResolutionManagement {
 
 
 
+            library("paging-runtime","androidx.paging:paging-runtime:$paging_version")
+            library("paging-common","androidx.paging:paging-common:$paging_version")
+            library("paging-compose","androidx.paging:paging-compose:$paging_compose")
+
+
+
+            library("squareup-okhttp-base","com.squareup.okhttp3:okhttp:$okhttp_version")
+            library("squareup-okhttp-interceptor","com.squareup.okhttp3:logging-interceptor:$okhttp_version")
+
+
+            library("squareup-retrofit","com.squareup.retrofit2:retrofit:$retrofit_version")
+            library("squareup-gson-converter","com.squareup.retrofit2:converter-gson:$retrofit_version")
+
+
+
         }
     }
 
@@ -81,6 +105,15 @@ buildscript {
         androidx_lifecycle='2.6.1'
         androidx_room='2.5.1'
         androidx_multidex='2.0.1'
+
+        paging_version = '3.1.1'
+        paging_compose= '1.0.0-alpha18'
+
+        okhttp_version = '4.11.0'
+        retrofit_version = '2.9.0'
+
+        fastjson2_version = '2.0.40'
+        kotlin_version = '1.9.10'
     }
     println("buildscript"+androidx_room)
     repositories {
@@ -159,3 +192,4 @@ apply plugin :MyGradlePluginSettings
 include ':lib'
 include ':pluginactivity'
 //include ':dynamicfeature'
+include ':base_http'

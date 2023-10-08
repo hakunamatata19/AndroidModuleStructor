@@ -21,7 +21,6 @@ class MyViewModel(ctx:Application):AndroidViewModel(ctx) {
         mSavedStateHandler = savedStateHandle
         throw IllegalArgumentException("")
         // Use the savedStateHandle.getLiveData() as the input to switchMap,
-        // allowing us to recalculate what LiveData to get from the DataRepository
         // based on what query the user has entered
 
     }
@@ -32,6 +31,8 @@ class MyViewModel(ctx:Application):AndroidViewModel(ctx) {
         // and is used as the input into the Transformations.switchMap above
         mSavedStateHandler!!.set(QUERY_KEY, query)
     }
+
+
 
     /**
      * Expose the LiveData Products query so the UI can observe it.

@@ -16,15 +16,13 @@
 
 package com.chen.agp;
 
-import android.app.Application;
 import android.content.Context;
 
+import androidx.multidex.BuildConfig;
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
-import androidx.room.Database;
 
 import com.chen.agp.db.AppDatabase;
-import com.chen.base_bean.CollectionSong;
 import com.chen.base_data.UserAssetsDataBase;
 import com.chen.base_utils.AppExecutors;
 import com.chen.base_utils.KLog;
@@ -41,7 +39,7 @@ public class BasicApp extends MultiDexApplication {
 
         super.attachBaseContext(base);
         MultiDex.install(this);
-        KLog.d(TAG,"startattachBaseContext");
+        KLog.d(TAG,"startattachBaseContext"+ BuildConfig.DEBUG);
     }
     private UserAssetsDataBase mUserAssetsDatabase;
 

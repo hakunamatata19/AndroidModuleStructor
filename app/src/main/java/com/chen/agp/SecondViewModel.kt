@@ -2,9 +2,13 @@ package com.chen.agp
 
 import android.app.Application
 import androidx.lifecycle.viewModelScope
+import com.chen.base_bean.HttpResult
+import com.chen.base_bean.MusicDetail
+import com.chen.base_http.business.MusicMediaMethod
 import com.chen.base_utils.KLog
 import com.chen.base_view.viewmodel.BaseViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -37,7 +41,17 @@ class SecondViewModel(applicaiton:Application):BaseViewModel(applicaiton) {
             }
         }
     }
+    /**
+     * 获取某个音乐Id 的详细信息
+     */
+    fun getMusicDetail(id:String?){
+        viewModelScope.async (Dispatchers.IO){
+          val httpresult:HttpResult<MusicDetail?>? =
+              MusicMediaMethod.instance.getService().getMusicDetail(id)
 
+            KLog.d(TAG,"getMusicDetail:${httpresult}");
+        }
+    }
     override fun onCleared() {
         super.onCleared()
     }
