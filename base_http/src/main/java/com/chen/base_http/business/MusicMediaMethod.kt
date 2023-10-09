@@ -1,9 +1,9 @@
 package com.chen.base_http.business
 
 import com.chen.base_http.BuildConfig
-import com.chen.base_http.base.HttpMethod2
+import com.chen.base_http.base.BaseHttpMethod
 
-class MusicMediaMethod :HttpMethod2<MusicMediaService>() {
+class MusicMediaMethod :BaseHttpMethod<MusicMediaService>() {
 
     companion object {
         val instance by lazy (LazyThreadSafetyMode.SYNCHRONIZED){

@@ -12,7 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 
-abstract  class HttpMethod2<T>{
+abstract  class BaseHttpMethod<T>{
       var mService: T
 
     protected abstract fun getBaseUrl(): String?
@@ -30,8 +30,8 @@ abstract  class HttpMethod2<T>{
 
 
     private   fun getJsonConverterFactory(): Converter.Factory? {
-       return  GsonConverterFactory.create()
-        //return MyGsonConverterFactory.instance
+         // GsonConverterFactory.create()
+        return MyGsonConverterFactory.instance
     }
 
     constructor() {
