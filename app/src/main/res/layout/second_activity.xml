@@ -35,5 +35,15 @@
         android:text="查询"
         android:layout_width="120dp"
         android:layout_height="60dp"/>
+    <androidx.appcompat.widget.AppCompatButton
+        android:background="@drawable/btn_selector"
+        android:layout_marginTop="20dp"
+        android:id="@+id/second_btn_newActivity"
+        app:layout_constraintTop_toBottomOf="@+id/second_btn_request"
+        app:layout_constraintStart_toStartOf="@+id/second_btn_request"
+        app:layout_constraintEnd_toEndOf="@+id/second_btn_request"
+        android:text="跳转"
+        android:layout_width="120dp"
+        android:layout_height="60dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

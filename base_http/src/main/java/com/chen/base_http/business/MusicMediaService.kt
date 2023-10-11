@@ -2,6 +2,7 @@ package com.chen.base_http.business
 
 import com.chen.base_bean.HttpResult
 import com.chen.base_bean.MusicDetail
+import com.chen.base_bean.RankMusicList
 import com.chen.base_bean.SearchMusicV3
 import okhttp3.RequestBody
 import retrofit2.http.Body
@@ -60,4 +61,22 @@ interface MusicMediaService {
      */
     @POST("ms/speechSearch")
     fun searchMusicV2(@Body body: RequestBody?): HttpResult<SearchMusicV3?>?
+
+    /**
+     * 获取排行榜歌曲列表接口
+     * http://wiki.skyoss.com/pages/viewpage.action?pageId=38770757
+     * http://movie.tc.skysrt.com/ms/getRankMusicList?id=1
+     *https://movie-tc.coocaa.ottcn.com/ms/getRankMusicList?id=kugou_8888&page_index=0&page_size=99
+     * @param id
+     * @param page_index
+     * @param page_size
+     * @return
+     */
+    @GET("ms/getRankMusicList")
+    suspend fun getRankMusicList(
+        @Query("id") id: String?,
+        @Query("page_index") page_index: Int,
+        @Query("page_size") page_size: Int
+    ): HttpResult<RankMusicList?>
+
 }

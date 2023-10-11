@@ -34,6 +34,9 @@ dependencyResolutionManagement {
             library('androidx-core',"androidx.core:core-ktx:$androidx_core_version")
             library('androidx-constraintlayout',"androidx.constraintlayout:constraintlayout:$androidx_constraintlayou")
             library('andoirdx-appcompat',"androidx.appcompat:appcompat:$androidx_appcompat")
+            library('andoirdx-activity',"androidx.activity:activity-ktx:$androidx_appcompat")
+            //androidx.activity:activity-ktx:$versions.activit
+
             library('android-material',"com.google.android.material:material:$material_version")
             library('androidx_lifecycle',"androidx.lifecycle:lifecycle-runtime-ktx:$androidx_lifecycle")
             library('androidx_viewmodel',"androidx.lifecycle:lifecycle-viewmodel-ktx:$androidx_lifecycle")
@@ -43,7 +46,7 @@ dependencyResolutionManagement {
 
             bundle('base-dependencies',['androidx-core','andoirdx-appcompat',
                                         'android-material','androidx-constraintlayout',
-            'androidx_lifecycle','androidx_viewmodel','androidx_viewmodel_savedstate'])
+            'androidx_lifecycle','androidx_viewmodel','androidx_viewmodel_savedstate','andoirdx-activity'])
             plugin('spring-dependency','io.spring.dependency-management').version('1.0.14.RELEASE')
 
 

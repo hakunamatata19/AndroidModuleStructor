@@ -89,6 +89,8 @@ dependencies {
     implementation(libs.adnroidKotlin)
     implementation(libs.bundles.base.dependencies)
     implementation(libs.multidex)
+    implementation(libs.paging.runtime)
+    testImplementation(libs.paging.common)
     api project(':base_view')
     api project(':base_data')
     api project(':base_bean')

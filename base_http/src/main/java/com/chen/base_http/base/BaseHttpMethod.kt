@@ -8,9 +8,9 @@ import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Converter
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
-
+import androidx.annotation.Nullable
+import com.chen.base_utils.BuildConfig
 
 abstract  class BaseHttpMethod<T>{
       var mService: T
@@ -25,7 +25,7 @@ abstract  class BaseHttpMethod<T>{
 
 
     open fun printLog(): Boolean {
-            return false;
+            return BuildConfig.DEBUG;
     }
 
 
@@ -72,7 +72,6 @@ abstract  class BaseHttpMethod<T>{
 
     private   fun getClient(headers: Map<String, String>?): OkHttpClient {
         val httpClientBuilder = OkHttpClient.Builder()
-        //httpClientBuilder.addInterceptor(DomainIntercept())
         httpClientBuilder.addInterceptor(Interceptor { chain ->
             val requestBuilder: Request.Builder = chain.request().newBuilder()
             try {
@@ -112,9 +111,4 @@ abstract  class BaseHttpMethod<T>{
     open fun getService(): T {
         return mService
     }
-
-
-
-
-
 }

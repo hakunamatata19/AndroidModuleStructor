@@ -26,6 +26,7 @@ class MySecondActivity : BaseActivity<SecondViewModel>(), View.OnClickListener {
     private lateinit var mBtnAdd: AppCompatButton
     private lateinit var mBtnClear: AppCompatButton
     private lateinit var mBtnCheck: AppCompatButton
+    private lateinit var mBtnNewActivity: AppCompatButton
     private val REQUEST_CODE_SAVE_IMAGE_FILE = 110
 
     override fun getViewMode(): SecondViewModel {
@@ -43,10 +44,12 @@ class MySecondActivity : BaseActivity<SecondViewModel>(), View.OnClickListener {
         mBtnAdd = findViewById(R.id.second_btn_add)
         mBtnClear = findViewById(R.id.second_btn_delete)
         mBtnCheck = findViewById(R.id.second_btn_request)
+        mBtnNewActivity = findViewById(R.id.second_btn_newActivity)
 
         mBtnAdd.setOnClickListener(this@MySecondActivity)
         mBtnClear.setOnClickListener(this@MySecondActivity)
         mBtnCheck.setOnClickListener(this@MySecondActivity)
+        mBtnNewActivity.setOnClickListener(this@MySecondActivity)
     }
 
     override fun initData() {
@@ -94,6 +97,13 @@ class MySecondActivity : BaseActivity<SecondViewModel>(), View.OnClickListener {
             }
         }
 
+        val jvmName = System.getProperty("java.vm.name")
+        val osName = System.getProperty("os.name")
+        KLog.d(TAG,"jvmName:$jvmName, osName:$osName");
+        System.getProperties().forEach{
+            entry->
+            KLog.d(TAG,"JavaSystemProp: ${entry?.key},value:${entry?.value}");
+        }
         KLog.d(TAG, "trystartIntent");
     /*    val intent = Intent()
          intent.setComponent(ComponentName("com.coocaa.karaoke","com.coocaa.karaoke.component.SkyVoiceProcessor"))
@@ -238,6 +248,17 @@ class MySecondActivity : BaseActivity<SecondViewModel>(), View.OnClickListener {
                             KLog.d(TAG, "onSongCollected:${it.size}")
                         }
                 }
+            }
+            R.id.second_btn_newActivity->{
+
+                startActivity(Intent().apply {
+                    KLog.d(TAG,"com.agp.chen.action.PAGING ${PagingDataActivity::class}")
+                    KLog.d(TAG,"com.agp.chen.action.PAGING ${PagingDataActivity::javaClass}")
+                    KLog.d(TAG,"com.agp.chen.action.PAGING ${PagingDataActivity::class.java}")
+                    KLog.d(TAG,"com.agp.chen.action.PAGING ${PagingDataActivity::class.javaObjectType}")
+                    setAction("com.agp.chen.action.PAGING")
+                    setClass(this@MySecondActivity,PagingDataActivity::class.java)
+                })
             }
         }
     }

@@ -1,5 +1,6 @@
 package com.chen.agp
 
+import android.annotation.SuppressLint
 import android.app.Application
 import androidx.lifecycle.viewModelScope
 import com.chen.base_bean.HttpResult
@@ -44,6 +45,7 @@ class SecondViewModel(applicaiton:Application):BaseViewModel(applicaiton) {
     /**
      * 获取某个音乐Id 的详细信息
      */
+    @SuppressLint("SuspiciousIndentation")
     fun getMusicDetail(id:String?){
         viewModelScope.async (Dispatchers.IO){
           val httpresult:HttpResult<MusicDetail?>? =
