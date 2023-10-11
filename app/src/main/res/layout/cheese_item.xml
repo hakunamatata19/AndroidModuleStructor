@@ -25,7 +25,15 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:orientation="vertical"
-    android:background="@color/dkgrey"
+
+    app:cardBackgroundColor="@color/dkgrey"
+    app:contentPaddingTop="15dp"
+    app:contentPaddingLeft="25dp"
+    app:contentPaddingRight="35dp"
+    app:contentPaddingBottom="45dp"
+    app:cardElevation="0dp"
+    android:elevation="0dp"
+
                                     app:cardUseCompatPadding="true">
     <TextView android:id="@+id/name" style="@style/TextAppearance.AppCompat.Medium"
               android:layout_width="match_parent" android:layout_height="wrap_content"
