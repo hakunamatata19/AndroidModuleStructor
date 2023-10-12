@@ -45,10 +45,10 @@ class PagingItemAdapter: PagingDataAdapter<MusicDetail,PagingItemViewHolder>(dif
             //判断两个Item是否是相同的，一般通过唯一Id，
             //
             override fun areItemsTheSame(oldItem: MusicDetail, newItem: MusicDetail): Boolean {
-                KLog.d(TAG,"areItemsTheSame：${oldItem.song_Name} ")
-                KLog.d(TAG,"areItemsTheSame：${newItem.song_Name} ")
+                KLog.d(TAG,"areItemsTheSame：${oldItem.title} ")
+                KLog.d(TAG,"areItemsTheSame：${newItem.title} ")
                 return if (oldItem is MusicDetail  && newItem is MusicDetail) {
-                    oldItem.song_id == newItem.song_id
+                    oldItem.id == newItem.id
                 }   else {
                     false
                 }
@@ -57,8 +57,8 @@ class PagingItemAdapter: PagingDataAdapter<MusicDetail,PagingItemViewHolder>(dif
             //判断内容是否发生了变更，
             //例如  一个Item 被收藏或者取消收藏，这个时候就需要进行界面的变更。
             override fun areContentsTheSame(oldItem: MusicDetail, newItem: MusicDetail): Boolean {
-                KLog.d(TAG,"aCarentsSame: ${oldItem?.song_id}");
-                KLog.d(TAG,"aCarentsSame: ${newItem?.song_id}");
+                KLog.d(TAG,"aCarentsSame: ${oldItem?.id}");
+                KLog.d(TAG,"aCarentsSame: ${newItem?.id}");
                 return oldItem.equals(newItem)
             }
 

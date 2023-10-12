@@ -21,7 +21,7 @@ class PagingItemViewHolder( container:ViewGroup)
      */
     fun bindTo(item: MusicDetail?) {
 
-            nameView.text = item?.song_Name
+            nameView.text = item?.title
             nameView.setTypeface(null, Typeface.NORMAL)
 
         cheese =  item
