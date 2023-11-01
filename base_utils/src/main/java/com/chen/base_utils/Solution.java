@@ -662,8 +662,66 @@ public class Solution {
             n++;
         }
         return n;
+
+    }
+   // 加油站问题解决
+
+    class SolutionGas {
+        public int canCompleteCircuit(int[] gas, int[] cost) {
+            int length = gas.length;
+            int totalGas = 0;
+            int totalCos = 0;
+            for (int i = 0; i < length; i++) {
+                totalGas += gas[i];
+                totalCos += cost[i];
+                if(totalGas<=0){
+                    return  -1;
+                }
+            }
+            if (totalGas < totalCos ) {
+                return -1;
+            }
+            totalGas = 0;
+            totalCos = 0;
+            for (int i = 0; i < length; i++) {
+                totalGas = 0;
+                int tmp = 0;
+                if(gas[i]<= 0){
+                   continue;
+                }
+                for (int j = i; j < i + length; j++) {
+                    tmp = j % length;
+
+                    totalGas = totalGas + gas[tmp] - cost[tmp];
+                    if (totalGas < 0) {
+                        break;
+                    }
+                }
+                if (totalGas >= 0) {
+                    return i;
+                }
+
+
+            }
+            return -1;
+        }
     }
 
+    // 135分发糖果问题
+    public static int candy(int[] ratings){
+        int totalCandy = 0;
+        for (int i = 0; i < ratings.length; i++) {
+
+        }
 
 
+        return  0;
+    }
+
+    // 接雨水问题
 }
+
+
+
+
+
