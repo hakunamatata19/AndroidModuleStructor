@@ -2,7 +2,9 @@ package com.chen.base_view.viewmodel
 
 import android.os.Bundle
 import android.os.PersistableBundle
+import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.RecyclerView
 import com.chen.base_utils.KLog
 
 /**
@@ -13,7 +15,6 @@ import com.chen.base_utils.KLog
 abstract class BaseActivity<T> : AppCompatActivity() {
     private val TAG = "BaseActivity"
     public var mViewModel: T? = null
-
     override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
         super.onCreate(savedInstanceState, persistentState)
         mViewModel = getViewMode()
