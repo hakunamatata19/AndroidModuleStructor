@@ -2,11 +2,9 @@ package com.chen.agp.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.databinding.ViewDataBinding
 import androidx.paging.LoadState
 import androidx.paging.LoadStateAdapter
-import androidx.paging.PagingDataAdapter
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import androidx.recyclerview.widget.RecyclerView
 import com.chen.agp.databinding.CheeseItemBinding
 
 /**
@@ -44,5 +42,5 @@ class LoadingAdapter(val retry:()->Unit):LoadStateAdapter<LoadingAdapter.Binding
     }
 
 
-    class BindingViewHolder(val binding:CheeseItemBinding):ViewHolder(binding.root)
+    class BindingViewHolder(val binding:CheeseItemBinding): RecyclerView.ViewHolder(binding.root)
 }

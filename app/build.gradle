@@ -82,6 +82,7 @@ android {
 configurations {
     cleanedAnnotations
     implementation.exclude group: 'org.jetbrains', module: 'annotations'
+   // implementation.exclude group: 'androidx.recyclerview', module: 'recyclerview'
 }
 
 dependencies {

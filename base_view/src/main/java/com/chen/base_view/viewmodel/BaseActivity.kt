@@ -2,9 +2,7 @@ package com.chen.base_view.viewmodel
 
 import android.os.Bundle
 import android.os.PersistableBundle
-import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.RecyclerView
 import com.chen.base_utils.KLog
 
 /**

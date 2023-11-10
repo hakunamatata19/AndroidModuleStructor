@@ -33,6 +33,12 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
+        <activity android:name=".MyRecyclerViewActivity">
+            <intent-filter>
+                <action android:name="com.agp.chen.action.MYRECY"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
 
     </application>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>

@@ -2,20 +2,16 @@ package com.chen.agp
 
 import android.os.Bundle
 import android.os.PersistableBundle
-import android.widget.LinearLayout
 import com.chen.agp.databinding.ActivityPaingLayoutBinding
 
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chen.agp.adapter.PagingItemAdapter
 import com.chen.base_utils.KLog
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -34,9 +30,10 @@ class PagingDataActivity :AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityPaingLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        mAdapter = PagingItemAdapter()
+      mAdapter = PagingItemAdapter()
         binding.pagingContainer.adapter =mAdapter
-        binding.pagingContainer.layoutManager= LinearLayoutManager(this@PagingDataActivity,LinearLayoutManager.VERTICAL,false)
+        binding.pagingContainer.layoutManager= LinearLayoutManager(this@PagingDataActivity,
+            LinearLayoutManager.VERTICAL,false)
        lifecycleScope.launch {
                 viewModel.allMusicList.collectLatest   {
                     KLog.d(TAG,"onItemReceived ${it}");

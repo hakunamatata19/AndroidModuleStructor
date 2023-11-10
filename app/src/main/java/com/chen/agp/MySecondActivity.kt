@@ -27,6 +27,7 @@ class MySecondActivity : BaseActivity<SecondViewModel>(), View.OnClickListener {
     private lateinit var mBtnClear: AppCompatButton
     private lateinit var mBtnCheck: AppCompatButton
     private lateinit var mBtnNewActivity: AppCompatButton
+    private lateinit var mBtnRecyclerActivity: AppCompatButton
     private val REQUEST_CODE_SAVE_IMAGE_FILE = 110
 
     override fun getViewMode(): SecondViewModel {
@@ -45,11 +46,13 @@ class MySecondActivity : BaseActivity<SecondViewModel>(), View.OnClickListener {
         mBtnClear = findViewById(R.id.second_btn_delete)
         mBtnCheck = findViewById(R.id.second_btn_request)
         mBtnNewActivity = findViewById(R.id.second_btn_newActivity)
+        mBtnRecyclerActivity = findViewById(R.id.second_btn_newRecy)
 
         mBtnAdd.setOnClickListener(this@MySecondActivity)
         mBtnClear.setOnClickListener(this@MySecondActivity)
         mBtnCheck.setOnClickListener(this@MySecondActivity)
         mBtnNewActivity.setOnClickListener(this@MySecondActivity)
+        mBtnRecyclerActivity.setOnClickListener(this@MySecondActivity)
     }
 
     override fun initData() {
@@ -258,6 +261,17 @@ class MySecondActivity : BaseActivity<SecondViewModel>(), View.OnClickListener {
                     KLog.d(TAG,"com.agp.chen.action.PAGING ${PagingDataActivity::class.javaObjectType}")
                     setAction("com.agp.chen.action.PAGING")
                     setClass(this@MySecondActivity,PagingDataActivity::class.java)
+                })
+            }
+            R.id.second_btn_newRecy->{
+
+                startActivity(Intent().apply {
+                    KLog.d(TAG,"com.agp.chen.action.PAGING ${PagingDataActivity::class}")
+                    KLog.d(TAG,"com.agp.chen.action.PAGING ${PagingDataActivity::javaClass}")
+                    KLog.d(TAG,"com.agp.chen.action.PAGING ${PagingDataActivity::class.java}")
+                    KLog.d(TAG,"com.agp.chen.action.PAGING ${PagingDataActivity::class.javaObjectType}")
+                    setAction("com.agp.chen.action.PAGING")
+                    setClass(this@MySecondActivity,MyRecyclerViewActivity::class.java)
                 })
             }
         }
