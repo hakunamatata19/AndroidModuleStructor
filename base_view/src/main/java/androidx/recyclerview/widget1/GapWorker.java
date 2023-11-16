@@ -20,6 +20,8 @@ import android.view.View;
 import androidx.annotation.Nullable;
 import androidx.core.os.TraceCompat;
 
+import com.chen.base_utils.KLog;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -27,7 +29,7 @@ import java.util.Comparator;
 import java.util.concurrent.TimeUnit;
 
 final class GapWorker implements Runnable {
-
+    private static final String TAG = "GapWorker";
     static final ThreadLocal<GapWorker> sGapWorker = new ThreadLocal<>();
 
     ArrayList<RecyclerView> mRecyclerViews = new ArrayList<>();
@@ -274,6 +276,7 @@ final class GapWorker implements Runnable {
 
     private RecyclerView.ViewHolder prefetchPositionWithDeadline(RecyclerView view,
                                                                  int position, long deadlineNs) {
+        KLog.d(TAG,"prefetchPositionWithDeadLine: "+position);
         if (isPrefetchPositionAttached(view, position)) {
             // don't attempt to prefetch attached views
             return null;
@@ -287,15 +290,18 @@ final class GapWorker implements Runnable {
                     position, false, deadlineNs);
 
             if (holder != null) {
+                KLog.d(TAG,"tryGetViewHodlerForPos："+position+", deadline:"+deadlineNs+";hodler:"+holder.isBound()+";isIvalid:"+holder.isInvalid());
                 if (holder.isBound() && !holder.isInvalid()) {
                     // Only give the view a chance to go into the cache if binding succeeded
                     // Note that we must use public method, since item may need cleanup
+                    KLog.d(TAG,"recyclerView---");
                     recycler.recycleView(holder.itemView);
                 } else {
                     // Didn't bind, so we can't cache the view, but it will stay in the pool until
                     // next prefetch/traversal. If a View fails to bind, it means we didn't have
                     // enough time prior to the deadline (and won't for other instances of this
                     // type, during this GapWorker prefetch pass).
+                    KLog.d(TAG,"addViewHolderToRecycledViewPool");
                     recycler.addViewHolderToRecycledViewPool(holder, false);
                 }
             }
@@ -340,12 +346,14 @@ final class GapWorker implements Runnable {
 
     private void flushTaskWithDeadline(Task task, long deadlineNs) {
         long taskDeadlineNs = task.immediate ? RecyclerView.FOREVER_NS : deadlineNs;
+        KLog.d(TAG,"flushTaskWithDeadLine:");
         RecyclerView.ViewHolder holder = prefetchPositionWithDeadline(task.view,
                 task.position, taskDeadlineNs);
         if (holder != null
                 && holder.mNestedRecyclerView != null
                 && holder.isBound()
                 && !holder.isInvalid()) {
+            KLog.d(TAG,"prefetchInnerRecyclerView..");
             prefetchInnerRecyclerViewWithDeadline(holder.mNestedRecyclerView.get(), deadlineNs);
         }
     }
@@ -361,6 +369,10 @@ final class GapWorker implements Runnable {
         }
     }
 
+    /**
+     * 在刷新间隔内尝试去预构建下一个Item
+     * @param deadlineNs
+     */
     void prefetch(long deadlineNs) {
         buildTaskList();
         flushTasksWithDeadline(deadlineNs);
@@ -393,7 +405,7 @@ final class GapWorker implements Runnable {
             }
 
             long nextFrameNs = TimeUnit.MILLISECONDS.toNanos(latestFrameVsyncMs) + mFrameIntervalNs;
-
+            //取出RecyclerView中最新一次刷新的时间，然后加上一帧的时间，就是下一次刷新时间
             prefetch(nextFrameNs);
 
             // TODO: consider rescheduling self, if there's more work to do

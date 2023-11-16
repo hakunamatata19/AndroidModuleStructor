@@ -70,7 +70,7 @@ class MySecondActivity : BaseActivity<SecondViewModel>(), View.OnClickListener {
     override fun onResume() {
         super.onResume()
         KLog.d(TAG, "onResume---");
-        if (ContextCompat.checkSelfPermission(
+        /*if (ContextCompat.checkSelfPermission(
                 this@MySecondActivity,
                 Manifest.permission.FOREGROUND_SERVICE
             )
@@ -99,7 +99,7 @@ class MySecondActivity : BaseActivity<SecondViewModel>(), View.OnClickListener {
                 }
             }
         }
-
+*/
         val jvmName = System.getProperty("java.vm.name")
         val osName = System.getProperty("os.name")
         KLog.d(TAG,"jvmName:$jvmName, osName:$osName");

@@ -33,6 +33,8 @@ import androidx.annotation.RestrictTo;
 import androidx.core.os.TraceCompat;
 import androidx.core.view.ViewCompat;
 
+import com.chen.base_utils.KLog;
+
 import java.util.List;
 
 /**
@@ -44,7 +46,7 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
 
     private static final String TAG = "LinearLayoutManager";
 
-    static final boolean DEBUG = false;
+    static final boolean DEBUG = true;
 
     public static final int HORIZONTAL = RecyclerView.HORIZONTAL;
 
@@ -470,6 +472,7 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
      */
     @Override
     public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
+        KLog.d(TAG,"onLayoutChildren");
         // layout algorithm:
         // 1) by checking children and other variables, find an anchor coordinate and an anchor
         //  item position.
@@ -498,8 +501,10 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
         final View focused = getFocusedChild();
         if (!mAnchorInfo.mValid || mPendingScrollPosition != RecyclerView.NO_POSITION
                 || mPendingSavedState != null) {
+            KLog.d(TAG,"needResetAnchorInfo.");
             mAnchorInfo.reset();
             mAnchorInfo.mLayoutFromEnd = mShouldReverseLayout ^ mStackFromEnd;
+            KLog.d(TAG,"mAnchorInfo.LayoutfromEnd:"+mAnchorInfo.mLayoutFromEnd);
             // calculate anchor position and coordinate
             updateAnchorInfoForLayout(recycler, state, mAnchorInfo);
             mAnchorInfo.mValid = true;
@@ -507,6 +512,7 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
                         >= mOrientationHelper.getEndAfterPadding()
                 || mOrientationHelper.getDecoratedEnd(focused)
                 <= mOrientationHelper.getStartAfterPadding())) {
+            KLog.d(TAG,"AlreadyGetAFocusedView");
             // This case relates to when the anchor child is the focused view and due to layout
             // shrinking the focused view fell outside the viewport, e.g. when soft keyboard shows
             // up after tapping an EditText which shrinks RV causing the focused view (The tapped
@@ -542,6 +548,7 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
         extraForEnd += mOrientationHelper.getEndPadding();
         if (state.isPreLayout() && mPendingScrollPosition != RecyclerView.NO_POSITION
                 && mPendingScrollPositionOffset != INVALID_OFFSET) {
+            KLog.d(TAG,"currentIsPreLayout");
             // if the child is visible and we are going to move it around, we should layout
             // extra items in the opposite direction to make sure new items animate nicely
             // instead of just fading in
@@ -577,6 +584,7 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
         }
 
         onAnchorReady(recycler, state, mAnchorInfo, firstLayoutDirection);
+        KLog.d(TAG,"LayoutAnchorisReady："+mAnchorInfo);
         detachAndScrapAttachedViews(recycler);
         mLayoutState.mInfinite = resolveIsInfinite();
         mLayoutState.mIsPreLayout = state.isPreLayout();
@@ -594,6 +602,9 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
             updateLayoutStateToFillEnd(mAnchorInfo);
             mLayoutState.mExtra = extraForEnd;
             mLayoutState.mCurrentPosition += mLayoutState.mItemDirection;
+            KLog.d(TAG,"currentLayoutState："+mLayoutState);
+            KLog.d(TAG,"currentRecyclerViewState："+state);
+            KLog.d(TAG,"currentRecyclerView："+recycler.toString());
             fill(recycler, mLayoutState, state, false);
             endOffset = mLayoutState.mOffset;
 
@@ -607,8 +618,11 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
             }
         } else {
             // fill towards end
+            KLog.d(TAG,"layoutFromStart--- updateLayoutStart to fill End");
             updateLayoutStateToFillEnd(mAnchorInfo);
+            KLog.d(TAG,"currentLayoutState:"+mLayoutState);
             mLayoutState.mExtra = extraForEnd;
+            KLog.d(TAG,"fillCurrentRecyclerView");
             fill(recycler, mLayoutState, state, false);
             endOffset = mLayoutState.mOffset;
             final int lastElement = mLayoutState.mCurrentPosition;
@@ -616,6 +630,7 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
                 extraForStart += mLayoutState.mAvailable;
             }
             // fill towards start
+            KLog.d(TAG,"startLayout to Fill Start");
             updateLayoutStateToFillStart(mAnchorInfo);
             mLayoutState.mExtra = extraForStart;
             mLayoutState.mCurrentPosition += mLayoutState.mItemDirection;
@@ -655,9 +670,12 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
                 endOffset += fixOffset;
             }
         }
+        KLog.d(TAG,"allChildAdd. layoutForPredictiveAnimations");
         layoutForPredictiveAnimations(recycler, state, startOffset, endOffset);
         if (!state.isPreLayout()) {
+            KLog.d(TAG,"call onLayoutComplete.");
             mOrientationHelper.onLayoutComplete();
+            KLog.d(TAG,"call onLayoutComplete."+mOrientationHelper.getTotalSpace());
         } else {
             mAnchorInfo.reset();
         }
@@ -766,8 +784,10 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
         if (DEBUG) {
             Log.d(TAG, "deciding anchor info for fresh state");
         }
+        //如果是第一次布局，这里就是mCoordinate 赋值为 mRecyclerView.getPaddingTop
         anchorInfo.assignCoordinateFromPadding();
         anchorInfo.mPosition = mStackFromEnd ? state.getItemCount() - 1 : 0;
+        KLog.d(TAG,"第一次布局，那么就从第0个开始。 ");
     }
 
     /**
@@ -1498,6 +1518,7 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
      */
     int fill(RecyclerView.Recycler recycler, LayoutState layoutState,
              RecyclerView.State state, boolean stopOnFocusable) {
+      
         // max offset we should set is mFastScroll + available
         final int start = layoutState.mAvailable;
         if (layoutState.mScrollingOffset != LayoutState.SCROLLING_OFFSET_NaN) {
@@ -1508,12 +1529,14 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
             recycleByLayoutState(recycler, layoutState);
         }
         int remainingSpace = layoutState.mAvailable + layoutState.mExtra;
+        KLog.d(TAG,"startToFillCurrentView remainingSpace:"+remainingSpace);
         LayoutChunkResult layoutChunkResult = mLayoutChunkResult;
         while ((layoutState.mInfinite || remainingSpace > 0) && layoutState.hasMore(state)) {
             layoutChunkResult.resetInternal();
             if (RecyclerView.VERBOSE_TRACING) {
                 TraceCompat.beginSection("LLM LayoutChunk");
             }
+            KLog.d(TAG,"startLayoutChunk:");
             layoutChunk(recycler, state, layoutState, layoutChunkResult);
             if (RecyclerView.VERBOSE_TRACING) {
                 TraceCompat.endSection();
@@ -1552,9 +1575,18 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
         return start - layoutState.mAvailable;
     }
 
+    /**
+     * 每次来填充一小部分， 也就是一个Item一个Item的填充
+     * @param recycler
+     * @param state
+     * @param layoutState
+     * @param result
+     */
     void layoutChunk(RecyclerView.Recycler recycler, RecyclerView.State state,
                      LayoutState layoutState, LayoutChunkResult result) {
+        KLog.d(TAG,"startGetNextRecyclerView");
         View view = layoutState.next(recycler);
+        KLog.d(TAG,"到这里， itemView已经创建并且绑定了，但是还没有加入到当前RV中："+view.getParent());
         if (view == null) {
             if (DEBUG && layoutState.mScrapList == null) {
                 throw new RuntimeException("received null view when unexpected");
@@ -1568,6 +1600,7 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
         if (layoutState.mScrapList == null) {
             if (mShouldReverseLayout == (layoutState.mLayoutDirection
                     == LayoutState.LAYOUT_START)) {
+                KLog.d(TAG,"addView -----");
                 addView(view);
             } else {
                 addView(view, 0);
@@ -1972,6 +2005,7 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
     @Override
     public View onFocusSearchFailed(View focused, int focusDirection,
                                     RecyclerView.Recycler recycler, RecyclerView.State state) {
+        KLog.d(TAG,"onFocusSearchFailed----");
         resolveShouldLayoutReverse();
         if (getChildCount() == 0) {
             return null;
@@ -1995,6 +2029,7 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
         // the screen if no focusable views are found in the given layout direction.
         final View nextCandidate;
         if (layoutDir == LayoutState.LAYOUT_START) {
+            KLog.d(TAG,"findPartiallyOrCompletelyInvisibleChild");
             nextCandidate = findPartiallyOrCompletelyInvisibleChildClosestToStart(recycler, state);
         } else {
             nextCandidate = findPartiallyOrCompletelyInvisibleChildClosestToEnd(recycler, state);
@@ -2224,9 +2259,11 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
          * @return The next element that we should layout.
          */
         View next(RecyclerView.Recycler recycler) {
+            KLog.d(TAG,"LayoutState:"+mScrapList);
             if (mScrapList != null) {
                 return nextViewFromScrapList();
             }
+            KLog.d(TAG,"Recycler.getViewForPosition ---"+mCurrentPosition);
             final View view = recycler.getViewForPosition(mCurrentPosition);
             mCurrentPosition += mItemDirection;
             return view;
