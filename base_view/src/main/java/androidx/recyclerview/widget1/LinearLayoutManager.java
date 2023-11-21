@@ -584,7 +584,7 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
         }
 
         onAnchorReady(recycler, state, mAnchorInfo, firstLayoutDirection);
-        KLog.d(TAG,"LayoutAnchorisReady："+mAnchorInfo);
+        KLog.d(TAG,"LayoutAnchorIsReady："+mAnchorInfo);
         detachAndScrapAttachedViews(recycler);
         mLayoutState.mInfinite = resolveIsInfinite();
         mLayoutState.mIsPreLayout = state.isPreLayout();
@@ -2076,7 +2076,7 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
      * be closest to position WIDTH  or HEIGHT
      */
     void validateChildOrder() {
-        Log.d(TAG, "validating child count " + getChildCount());
+        KLog.d(TAG, "validating child count " + getChildCount());
         if (getChildCount() < 1) {
             return;
         }

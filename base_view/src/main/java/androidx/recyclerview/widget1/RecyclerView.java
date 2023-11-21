@@ -920,7 +920,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView, NestedScro
                                 + " detached: " + vh + exceptionLabel());
                     }
                     if (DEBUG) {
-                        Log.d(TAG, "reAttach " + vh);
+                        KLog.d(TAG, "reAttach " + vh);
                     }
                     vh.clearTmpDetachFlag();
                 }
@@ -929,6 +929,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView, NestedScro
 
             @Override
             public void detachViewFromParent(int offset) {
+                KLog.d(TAG,"detachViewFromParent.."+offset);
                 final View view = getChildAt(offset);
                 if (view != null) {
                     final ViewHolder vh = getChildViewHolderInt(view);
@@ -938,7 +939,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView, NestedScro
                                     + " detached child " + vh + exceptionLabel());
                         }
                         if (DEBUG) {
-                            Log.d(TAG, "tmpDetach " + vh);
+                            KLog.d(TAG, "tmpDetach " + vh);
                         }
                         vh.addFlags(ViewHolder.FLAG_TMP_DETACHED);
                     }
@@ -3342,7 +3343,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView, NestedScro
             if (measureSpecModeIsExactly || mAdapter == null) {
                 return;
             }
-
+            KLog.d(TAG,"measureCurrentByLayout");
             if (mState.mLayoutStep == State.STEP_START) {
                 dispatchLayoutStep1();
             }
@@ -3350,6 +3351,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView, NestedScro
             // consistency
             mLayout.setMeasureSpecs(widthSpec, heightSpec);
             mState.mIsMeasuring = true;
+            KLog.d(TAG,"dispatchLayoutStep2");
             dispatchLayoutStep2();
 
             // now we can get the width and height from the children.
@@ -3358,12 +3360,14 @@ public class RecyclerView extends ViewGroup implements ScrollingView, NestedScro
             // if RecyclerView has non-exact width and height and if there is at least one child
             // which also has non-exact width & height, we have to re-measure.
             if (mLayout.shouldMeasureTwice()) {
+                KLog.d(TAG,"shouldMeasureTwice--");
                 mLayout.setMeasureSpecs(
                         MeasureSpec.makeMeasureSpec(getMeasuredWidth(), MeasureSpec.EXACTLY),
                         MeasureSpec.makeMeasureSpec(getMeasuredHeight(), MeasureSpec.EXACTLY));
                 mState.mIsMeasuring = true;
                 dispatchLayoutStep2();
                 // now we can get the width and height from the children.
+                KLog.d(TAG,"setMeasuredDimensionFromChildren");
                 mLayout.setMeasuredDimensionFromChildren(widthSpec, heightSpec);
             }
         } else {
@@ -3653,6 +3657,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView, NestedScro
             // leave the state in START
             return;
         }
+        KLog.d(TAG,"dispatchLayout----");
         mState.mIsMeasuring = false;
         if (mState.mLayoutStep == State.STEP_START) {
             dispatchLayoutStep1();
@@ -3660,6 +3665,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView, NestedScro
             dispatchLayoutStep2();
         } else if (mAdapterHelper.hasUpdates() || mLayout.getWidth() != getWidth()
                 || mLayout.getHeight() != getHeight()) {
+            KLog.d(TAG,"somethingDifferent");
             // First 2 steps are done in onMeasure but looks like we have to run again due to
             // changed size.
             mLayout.setExactMeasureSpecsFrom(this);
@@ -4521,6 +4527,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView, NestedScro
      * data change event.
      */
     void markKnownViewsInvalid() {
+        KLog.d(TAG,"makeAllKnownViewsInvalid. ");
         final int childCount = mChildHelper.getUnfilteredChildCount();
         for (int i = 0; i < childCount; i++) {
             final ViewHolder holder = getChildViewHolderInt(mChildHelper.getUnfilteredChildAt(i));
@@ -5323,7 +5330,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView, NestedScro
 
         @Override
         public void onItemRangeChanged(int positionStart, int itemCount, Object payload) {
-            KLog.d(TAG,"onAdapterItemRangeChanged.");
+            KLog.d(TAG,"onAdapterItemRangeChanged. posStart:"+positionStart+";count:"+itemCount+",payLoad:"+payload);
             assertNotInLayoutOrScroll(null);
             if (mAdapterHelper.onItemRangeChanged(positionStart, itemCount, payload)) {
                 triggerUpdateProcessor();
@@ -5355,6 +5362,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView, NestedScro
         }
 
         void triggerUpdateProcessor() {
+            KLog.d(TAG,"triggerUpdateProcessor: PosOnAn:"+POST_UPDATES_ON_ANIMATION+";mHasFixedSize:"+mHasFixedSize+";att:"+mIsAttached);
             if (POST_UPDATES_ON_ANIMATION && mHasFixedSize && mIsAttached) {
                 ViewCompat.postOnAnimation(RecyclerView.this, mUpdateChildViewsRunnable);
             } else {
@@ -5671,6 +5679,9 @@ public class RecyclerView extends ViewGroup implements ScrollingView, NestedScro
      * may be repositioned by a LayoutManager without remeasurement.</p>
      */
     public final class Recycler {
+
+        //当RecyclerView没有固定大小，在进行初次测量时，会先将ItemView添加到Recyclerview中，协助测量，测量的时候，这些
+        //Itemview就会放在mAttachedScrap中
         final ArrayList<ViewHolder> mAttachedScrap = new ArrayList<>();
         ArrayList<ViewHolder> mChangedScrap = null;
 
@@ -6257,12 +6268,16 @@ public class RecyclerView extends ViewGroup implements ScrollingView, NestedScro
             KLog.d(TAG,"forceRecycler: "+forceRecycle);
             KLog.d(TAG,"holder.isRecyclable(): "+holder.isRecyclable());
             if (forceRecycle || holder.isRecyclable()) {
+
+
                 if (mViewCacheMax > 0
                         && !holder.hasAnyOfTheFlags(ViewHolder.FLAG_INVALID
                         | ViewHolder.FLAG_REMOVED
                         | ViewHolder.FLAG_UPDATE
                         | ViewHolder.FLAG_ADAPTER_POSITION_UNKNOWN)) {
+                    KLog.d(TAG,"holder has no flags。");
                     // Retire oldest cached view
+                    //这里标志着这个是新创建的，就直接添加在mCachedView中
                     int cachedViewSize = mCachedViews.size();
                     if (cachedViewSize >= mViewCacheMax && cachedViewSize > 0) {
                         //尝试删除最早的一个cachedView
@@ -6361,7 +6376,10 @@ public class RecyclerView extends ViewGroup implements ScrollingView, NestedScro
          * @param view View to scrap
          */
         void scrapView(View view) {
+
             final ViewHolder holder = getChildViewHolderInt(view);
+            KLog.d(TAG,"mAttachedScrap scrapView"+(holder.hasAnyOfTheFlags(ViewHolder.FLAG_REMOVED | ViewHolder.FLAG_INVALID)
+                    || !holder.isUpdated() || canReuseUpdatedViewHolder(holder)));
             if (holder.hasAnyOfTheFlags(ViewHolder.FLAG_REMOVED | ViewHolder.FLAG_INVALID)
                     || !holder.isUpdated() || canReuseUpdatedViewHolder(holder)) {
                 if (holder.isInvalid() && !holder.isRemoved() && !mAdapter.hasStableIds()) {
@@ -6370,12 +6388,14 @@ public class RecyclerView extends ViewGroup implements ScrollingView, NestedScro
                             + " recycler pool." + exceptionLabel());
                 }
                 holder.setScrapContainer(this, false);
+                KLog.d(TAG,"mAttachedScrap addHolder."+holder);
                 mAttachedScrap.add(holder);
             } else {
                 if (mChangedScrap == null) {
                     mChangedScrap = new ArrayList<ViewHolder>();
                 }
                 holder.setScrapContainer(this, true);
+                KLog.d(TAG,"mChangedScrapAdd:"+holder);
                 mChangedScrap.add(holder);
             }
         }
@@ -6452,13 +6472,14 @@ public class RecyclerView extends ViewGroup implements ScrollingView, NestedScro
          */
         ViewHolder getScrapOrHiddenOrCachedHolderForPosition(int position, boolean dryRun) {
             final int scrapCount = mAttachedScrap.size();
-
+            KLog.d(TAG,"mAttachedScrap:"+scrapCount);
             // Try first for an exact, non-invalid match from scrap.
             for (int i = 0; i < scrapCount; i++) {
                 final ViewHolder holder = mAttachedScrap.get(i);
                 if (!holder.wasReturnedFromScrap() && holder.getLayoutPosition() == position
                         && !holder.isInvalid() && (mState.mInPreLayout || !holder.isRemoved())) {
                     holder.addFlags(ViewHolder.FLAG_RETURNED_FROM_SCRAP);
+                    KLog.d(TAG,"holderFromScrap-");
                     return holder;
                 }
             }
@@ -8394,7 +8415,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView, NestedScro
             }
             final LayoutParams lp = (LayoutParams) child.getLayoutParams();
             if (holder.wasReturnedFromScrap() || holder.isScrap()) {
-                KLog.d(TAG,"holder is FromScrap");
+                KLog.d(TAG,"holder is FromScrap"+holder.isScrap());
                 if (holder.isScrap()) {
                     holder.unScrap();
                 } else {
@@ -9028,11 +9049,16 @@ public class RecyclerView extends ViewGroup implements ScrollingView, NestedScro
                 }
                 return;
             }
+            KLog.d(TAG,"scrapOrRecycleView:"+(viewHolder.isInvalid() && !viewHolder.isRemoved()
+                    && !mRecyclerView.mAdapter.hasStableIds()));
+
             if (viewHolder.isInvalid() && !viewHolder.isRemoved()
                     && !mRecyclerView.mAdapter.hasStableIds()) {
+                KLog.d(TAG,"removeAndRecycleView");
                 removeViewAt(index);
                 recycler.recycleViewHolderInternal(viewHolder);
             } else {
+                KLog.d(TAG,"detachAndScrapView");
                 detachViewAt(index);
                 recycler.scrapView(view);
                 mRecyclerView.mViewInfoStore.onViewDetached(viewHolder);
@@ -11124,6 +11150,14 @@ public class RecyclerView extends ViewGroup implements ScrollingView, NestedScro
         }
 
         void addFlags(int flags) {
+            KLog.d(TAG,"addFlag---");
+            if((flags & ViewHolder.FLAG_INVALID) != 0){
+                try {
+                    throw  new IllegalArgumentException("DebugLog");
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
             mFlags |= flags;
         }
 
