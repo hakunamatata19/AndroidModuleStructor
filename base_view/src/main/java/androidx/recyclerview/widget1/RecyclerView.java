@@ -5709,10 +5709,17 @@ public class RecyclerView extends ViewGroup implements ScrollingView, NestedScro
         @Override
         public String toString() {
             StringBuilder sb = new StringBuilder();
-            sb.append("mAttachedScrap:"+mAttachedScrap.size())
-                    .append("mChangedScrap:"+mChangedScrap==null?null:mChangedScrap.size())
-                    .append("mCachedViews:"+mCachedViews.size())
-                    .append("mRecyclerPool:"+mRecyclerPool==null?null:mRecyclerPool.size());
+            sb.append("mAttachedScrap:"+mAttachedScrap.size());
+            if(mChangedScrap==null){
+                sb .append("mChangedScrap:"+ "null" );
+            }else{
+             sb.append("mChangedScrap:" +mChangedScrap.size());
+            }
+            if(mRecyclerPool==null){
+                sb .append("mRecyclerPool:"+ "null" );
+            }else{
+                sb.append("mRecyclerPool:" +mRecyclerPool.size());
+            }
             return sb.toString();
         }
 
@@ -9230,7 +9237,18 @@ public class RecyclerView extends ViewGroup implements ScrollingView, NestedScro
                     getPaddingTop() + getPaddingBottom()
                             + lp.topMargin + lp.bottomMargin + heightUsed, lp.height,
                     canScrollVertically());
+            KLog.d(TAG,"needMeasureChild：widthMode:"+MeasureSpec.getMode(widthSpec));
+            KLog.d(TAG,"needMeasureChild：measureSpec:"+MeasureSpec.getSize(widthSpec));
+            KLog.d(TAG,"needMeasureChild：heidhtMode::"+MeasureSpec.getMode(heightSpec));
+            KLog.d(TAG,"needMeasureChild：measureSpec:"+MeasureSpec.getSize(heightSpec));
+
             if (shouldMeasureChild(child, widthSpec, heightSpec, lp)) {
+                KLog.d(TAG,"shouldMeasureChild:----");
+                KLog.d(TAG,"needMeasureChild：widthMode:"+MeasureSpec.getMode(widthSpec));
+                KLog.d(TAG,"needMeasureChild：measureSpec:"+MeasureSpec.getSize(widthSpec));
+                KLog.d(TAG,"needMeasureChild：heidhtMode::"+MeasureSpec.getMode(heightSpec));
+                KLog.d(TAG,"needMeasureChild：measureSpec:"+MeasureSpec.getSize(heightSpec));
+
                 child.measure(widthSpec, heightSpec);
             }
         }
@@ -11161,7 +11179,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView, NestedScro
             mFlags |= flags;
         }
 
-        void addChangePayload(Object payload) {
+        public void addChangePayload(Object payload) {
             if (payload == null) {
                 addFlags(FLAG_ADAPTER_FULLUPDATE);
             } else if ((mFlags & FLAG_ADAPTER_FULLUPDATE) == 0) {
