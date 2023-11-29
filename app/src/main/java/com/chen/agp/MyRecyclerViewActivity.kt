@@ -1,5 +1,6 @@
 package com.chen.agp
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
 import android.text.Layout
@@ -11,6 +12,7 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget1.LinearLayoutManager
 import androidx.recyclerview.widget1.RecyclerView
 import androidx.recyclerview.widget1.RecyclerView.ItemAnimator
+import com.chen.agp.MyRecyclerViewActivity.Companion.mDataList
 import com.chen.agp.databinding.ActivityMyrecyclerLayoutBinding
 import com.chen.base_utils.KLog
 import com.chen.view.CardPresentLayoutMananger
@@ -23,8 +25,11 @@ class MyRecyclerViewActivity:AppCompatActivity(), View.OnClickListener {
   //  ActivityPaingLayoutBinding
     lateinit var  mBinding:ActivityMyrecyclerLayoutBinding
     lateinit var  mRecyclerView: RecyclerView
-      var  mDataList = ArrayList<String>();
+
     lateinit var  mAdapter:MyRvAdapter
+    companion object{
+        var  mDataList = ArrayList<String>();
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = ActivityMyrecyclerLayoutBinding.inflate(layoutInflater)
@@ -41,11 +46,10 @@ class MyRecyclerViewActivity:AppCompatActivity(), View.OnClickListener {
         mAdapter = MyRvAdapter(this@MyRecyclerViewActivity)
         mBinding.pagingContainer.adapter =mAdapter
        // mBinding.pagingContainer.itemAnimator =MyRvAdapter.MyItemAnimator()
-        mAdapter.setNewData(mDataList)
         /*mBinding.pagingContainer.layoutManager = LinearLayoutManager(this@MyRecyclerViewActivity,
             LinearLayoutManager.VERTICAL,false)*/
        // mBinding.pagingContainer.layoutManager = CardPresentLayoutMananger()
-        mBinding.pagingContainer.layoutManager = MySimpleLayoutManager( )
+        mBinding.pagingContainer.layoutManager = MySimpleLayoutManager( this)
 
     }
 
@@ -53,6 +57,7 @@ class MyRecyclerViewActivity:AppCompatActivity(), View.OnClickListener {
         super.onResume()
     }
 
+    @SuppressLint("SuspiciousIndentation")
     override fun onClick(v: View?) {
 
         if (v != null) {
@@ -66,13 +71,15 @@ class MyRecyclerViewActivity:AppCompatActivity(), View.OnClickListener {
 
 
             }else if(holder.layoutPosition ==0){
-                mAdapter.notifyItemChanged(0,"waka")
+                //mDataList.add(0,"nihaohhhh")
+                mDataList.removeAt(0)
+                mAdapter.notifyItemRemoved(0)
             }else{
                 mDataList = ArrayList<String>()
                 for (x in 0 ..9){
                     mDataList.add("nihao:$x")
                 }
-                mAdapter.setNewData(mDataList)
+                mAdapter.notifyDataSetChanged()
             }
         }
 
@@ -93,10 +100,14 @@ class MyRvHolder(val buttonView: AppCompatButton):
 
 class MyRvAdapter(val listener: View.OnClickListener): RecyclerView.Adapter<MyRvHolder>(){
 
-      var mDatas: List<String>?  =null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyRvHolder {
          var mItemView =  AppCompatButton(parent.context)
         mItemView.setBackgroundColor(Color.DKGRAY)
+
+        mItemView.setBackgroundResource(R.drawable.btn_selector)
+
+
         mItemView.gravity=Gravity.CENTER
         val mLayoutParams = RecyclerView.LayoutParams(360,360)
         mItemView.minWidth=360
@@ -106,18 +117,15 @@ class MyRvAdapter(val listener: View.OnClickListener): RecyclerView.Adapter<MyRv
     }
 
     override fun getItemCount(): Int {
-        return mDatas?.size?:0
+        return mDataList?.size?:0
     }
 
     override fun onBindViewHolder(holder: MyRvHolder, position: Int) {
-        holder.buttonView.text = mDatas?.get(position)
+        holder.buttonView.text = mDataList?.get(position)
         holder.itemView.setOnClickListener(listener)
     }
 
-    public fun setNewData(newData:List<String>?){
-        mDatas = newData as ArrayList<String>;
-        notifyDataSetChanged()
-    }
+
 
 
     class MyItemAnimator:ItemAnimator(){

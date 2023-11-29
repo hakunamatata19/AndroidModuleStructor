@@ -1,11 +1,13 @@
 package com.chen.view
 
+import android.view.View
+import android.view.View.OnClickListener
 import android.view.ViewGroup
 import androidx.recyclerview.widget1.RecyclerView
 import androidx.recyclerview.widget1.RecyclerView.Recycler
 import com.chen.base_utils.KLog
 
-class MySimpleLayoutManager : RecyclerView.LayoutManager() {
+class MySimpleLayoutManager(var mClickListener:OnClickListener) : RecyclerView.LayoutManager(), View.OnClickListener {
 
     public val ITEM_COUNT = 4
     public val POSITION_OFFSET = 40
@@ -38,6 +40,7 @@ class MySimpleLayoutManager : RecyclerView.LayoutManager() {
 
             view.scaleX = (1- x * SCALE_OFFSET).toFloat()
             view.scaleY = (1- x * SCALE_OFFSET ).toFloat()
+            view.rotation = 10*x.toFloat()
             view.translationY = (x*POSITION_OFFSET).toFloat()
             measureChildWithMargins(view,0,0)
             val widthSpace = width - getDecoratedMeasuredWidth(view)
@@ -51,5 +54,16 @@ class MySimpleLayoutManager : RecyclerView.LayoutManager() {
         }
 
 
+    }
+
+    override fun onLayoutCompleted(state: RecyclerView.State?) {
+        for (x in 0 until  childCount){
+            getChildAt(x)!!.setOnClickListener(this)
+        }
+    }
+
+    override fun onClick(v: View) {
+        val pos = getPosition(v)
+        mClickListener?.onClick(v)
     }
 }
