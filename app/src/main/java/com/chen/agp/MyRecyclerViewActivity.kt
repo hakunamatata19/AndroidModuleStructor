@@ -7,6 +7,7 @@ import android.text.Layout
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget1.LinearLayoutManager
@@ -16,6 +17,7 @@ import com.chen.agp.MyRecyclerViewActivity.Companion.mDataList
 import com.chen.agp.databinding.ActivityMyrecyclerLayoutBinding
 import com.chen.base_utils.KLog
 import com.chen.view.CardPresentLayoutMananger
+import com.chen.view.ItemKeyRemoveAnimator
 import com.chen.view.ItemTouchHelperCallback
 import com.chen.view.MySimpleLayoutManager
 import com.chen.view.SlideLayoutManager
@@ -50,6 +52,9 @@ class MyRecyclerViewActivity:AppCompatActivity(), View.OnClickListener {
             LinearLayoutManager.VERTICAL,false)*/
        // mBinding.pagingContainer.layoutManager = CardPresentLayoutMananger()
         mBinding.pagingContainer.layoutManager = MySimpleLayoutManager( this)
+        mBinding.pagingContainer.itemAnimator = ItemKeyRemoveAnimator()
+         mBinding.pagingContainer.layoutAnimation= AnimationUtils.loadLayoutAnimation(this@MyRecyclerViewActivity,
+             R.anim.layout_animation_fall_down)
 
     }
 
@@ -104,10 +109,7 @@ class MyRvAdapter(val listener: View.OnClickListener): RecyclerView.Adapter<MyRv
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyRvHolder {
          var mItemView =  AppCompatButton(parent.context)
         mItemView.setBackgroundColor(Color.DKGRAY)
-
         mItemView.setBackgroundResource(R.drawable.btn_selector)
-
-
         mItemView.gravity=Gravity.CENTER
         val mLayoutParams = RecyclerView.LayoutParams(360,360)
         mItemView.minWidth=360
@@ -128,60 +130,5 @@ class MyRvAdapter(val listener: View.OnClickListener): RecyclerView.Adapter<MyRv
 
 
 
-    class MyItemAnimator:ItemAnimator(){
-        private   val TAG = "MyRecyclerViewActivity"
-        override fun animateDisappearance(
-            viewHolder: RecyclerView.ViewHolder,
-            preLayoutInfo: ItemHolderInfo,
-            postLayoutInfo: ItemHolderInfo?
-        ): Boolean {
-            KLog.d(TAG,"animateDisappearance");
-            return true;
-        }
-
-        override fun animateAppearance(
-            viewHolder: RecyclerView.ViewHolder,
-            preLayoutInfo: ItemHolderInfo?,
-            postLayoutInfo: ItemHolderInfo
-        ): Boolean {
-
-            KLog.d(TAG,"animateAppearance");
-            return false;
-        }
-
-        override fun animatePersistence(
-            viewHolder: RecyclerView.ViewHolder,
-            preLayoutInfo: ItemHolderInfo,
-            postLayoutInfo: ItemHolderInfo
-        ): Boolean {
-            TODO("Not yet implemented")
-        }
-
-        override fun animateChange(
-            oldHolder: RecyclerView.ViewHolder,
-            newHolder: RecyclerView.ViewHolder,
-            preLayoutInfo: ItemHolderInfo,
-            postLayoutInfo: ItemHolderInfo
-        ): Boolean {
-            TODO("Not yet implemented")
-        }
-
-        override fun runPendingAnimations() {
-            TODO("Not yet implemented")
-        }
-
-        override fun endAnimation(item: RecyclerView.ViewHolder) {
-            TODO("Not yet implemented")
-        }
-
-        override fun endAnimations() {
-            TODO("Not yet implemented")
-        }
-
-        override fun isRunning(): Boolean {
-            TODO("Not yet implemented")
-        }
-
-    }
 
 }

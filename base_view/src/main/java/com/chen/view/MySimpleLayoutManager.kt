@@ -28,19 +28,18 @@ class MySimpleLayoutManager(var mClickListener:OnClickListener) : RecyclerView.L
 
         var tempCount = getItemCount()
         tempCount = Math.min(tempCount, ITEM_COUNT)
-
-        KLog.d(TAG, "LayoutItemCount : $tempCount")
-
-
-        for (x in tempCount - 1 downTo 0) {
+        for (x in tempCount - 1 downTo 0)  {
             KLog.d(TAG, "startLayoutItem:$x")
            val view= recycler.getViewForPosition(x)
+            if(view.layoutParams is RecyclerView.LayoutParams){
+              //  (view.layoutParams as RecyclerView.LayoutParams).topMargin = -40*(tempCount-x)
+            }
             addView(view)
           //val params =  view.layoutParams as RecyclerView.LayoutParams;
 
-            view.scaleX = (1- x * SCALE_OFFSET).toFloat()
-            view.scaleY = (1- x * SCALE_OFFSET ).toFloat()
-            view.rotation = 10*x.toFloat()
+             //view.scaleX = (1- x * SCALE_OFFSET).toFloat()
+            //view.scaleY = (1- x * SCALE_OFFSET ).toFloat()
+            //view.rotation = 10*x.toFloat()
             view.translationY = (x*POSITION_OFFSET).toFloat()
             measureChildWithMargins(view,0,0)
             val widthSpace = width - getDecoratedMeasuredWidth(view)

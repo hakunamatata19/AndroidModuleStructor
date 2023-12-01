@@ -939,7 +939,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView, NestedScro
                                     + " detached child " + vh + exceptionLabel());
                         }
                         if (DEBUG) {
-                            KLog.d(TAG, "tmpDetach " + vh);
+                            KLog.d(TAG, "tmpDetach " + vh.toString());
                         }
                         vh.addFlags(ViewHolder.FLAG_TMP_DETACHED);
                     }
