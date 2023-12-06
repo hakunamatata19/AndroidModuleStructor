@@ -2,6 +2,7 @@ package com.chen.agp
 
 import android.annotation.SuppressLint
 import android.graphics.Color
+import android.graphics.PostProcessor
 import android.os.Bundle
 import android.text.Layout
 import android.view.Gravity
@@ -20,6 +21,8 @@ import com.chen.view.CardPresentLayoutMananger
 import com.chen.view.ItemKeyRemoveAnimator
 import com.chen.view.ItemTouchHelperCallback
 import com.chen.view.MySimpleLayoutManager
+import com.chen.view.MySimpleLayoutManager.Companion.POSITION_OFFSET
+import com.chen.view.MySimpleLayoutManager.Companion.SCALE_OFFSET
 import com.chen.view.SlideLayoutManager
 
 class MyRecyclerViewActivity:AppCompatActivity(), View.OnClickListener {
@@ -77,8 +80,9 @@ class MyRecyclerViewActivity:AppCompatActivity(), View.OnClickListener {
 
             }else if(holder.layoutPosition ==0){
                 //mDataList.add(0,"nihaohhhh")
-                mDataList.removeAt(0)
-                mAdapter.notifyItemRemoved(0)
+               /* mDataList.removeAt(0)
+                mAdapter.notifyItemRemoved(0)*/
+                mRecyclerView.offsetChildrenVertical(POSITION_OFFSET)
             }else{
                 mDataList = ArrayList<String>()
                 for (x in 0 ..9){
@@ -104,7 +108,7 @@ class MyRvHolder(val buttonView: AppCompatButton):
 }
 
 class MyRvAdapter(val listener: View.OnClickListener): RecyclerView.Adapter<MyRvHolder>(){
-
+    private   val TAG = "MyRecyclerViewActivity"
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyRvHolder {
          var mItemView =  AppCompatButton(parent.context)
@@ -123,6 +127,13 @@ class MyRvAdapter(val listener: View.OnClickListener): RecyclerView.Adapter<MyRv
     }
 
     override fun onBindViewHolder(holder: MyRvHolder, position: Int) {
+        KLog.d(TAG,"bindViewHodler:${position}, hodler:${holder.adapterPosition}")
+        val view = holder.itemView
+      val params =  view.layoutParams as RecyclerView.LayoutParams;
+        /* view.scaleX = (1- position * SCALE_OFFSET).toFloat()
+         view.scaleY = (1- position * SCALE_OFFSET ).toFloat()
+        view.translationY = (position*POSITION_OFFSET).toFloat()*/
+
         holder.buttonView.text = mDataList?.get(position)
         holder.itemView.setOnClickListener(listener)
     }

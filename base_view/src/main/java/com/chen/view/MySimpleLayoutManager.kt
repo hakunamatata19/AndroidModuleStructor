@@ -9,9 +9,12 @@ import com.chen.base_utils.KLog
 
 class MySimpleLayoutManager(var mClickListener:OnClickListener) : RecyclerView.LayoutManager(), View.OnClickListener {
 
-    public val ITEM_COUNT = 4
-    public val POSITION_OFFSET = 40
-    public val SCALE_OFFSET = 0.08
+
+    companion object{
+        public val ITEM_COUNT = 4
+        public val POSITION_OFFSET = 40
+        public val SCALE_OFFSET = 0.08
+    }
 
     private val TAG = "MySimpleLayoutManager"
 
@@ -37,9 +40,8 @@ class MySimpleLayoutManager(var mClickListener:OnClickListener) : RecyclerView.L
             addView(view)
           //val params =  view.layoutParams as RecyclerView.LayoutParams;
 
-             //view.scaleX = (1- x * SCALE_OFFSET).toFloat()
-            //view.scaleY = (1- x * SCALE_OFFSET ).toFloat()
-            //view.rotation = 10*x.toFloat()
+             view.scaleX = (1- x * SCALE_OFFSET).toFloat()
+            view.scaleY = (1- x * SCALE_OFFSET ).toFloat()
             view.translationY = (x*POSITION_OFFSET).toFloat()
             measureChildWithMargins(view,0,0)
             val widthSpace = width - getDecoratedMeasuredWidth(view)
@@ -64,5 +66,13 @@ class MySimpleLayoutManager(var mClickListener:OnClickListener) : RecyclerView.L
     override fun onClick(v: View) {
         val pos = getPosition(v)
         mClickListener?.onClick(v)
+    }
+
+    public fun offsetPos(delta:Int){
+
+    }
+
+    override fun supportsPredictiveItemAnimations(): Boolean {
+        return true
     }
 }
